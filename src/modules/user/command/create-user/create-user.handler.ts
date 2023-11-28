@@ -10,7 +10,7 @@ import { CreateUserCommand } from '@/modules/user/command/create-user/create-use
 import { USER_ALREADY_EXISTS } from '@/modules/user/constant/error-message.constant';
 import { UserModel } from '@/modules/user/model/user.model';
 import { UserModelFactory } from '@/modules/user/model/user-model.factory';
-import { FindUserByEmailQuery } from '@/modules/user/query/find-by-email/find-user-by-email.query';
+import { FindUserByPhoneQuery } from '../../query/find-user-by-phone/find-user-by-phone.query';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
@@ -24,7 +24,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     const { createUserInput } = command;
 
     const user: UserModel = await this.queryBus.execute(
-      new FindUserByEmailQuery(createUserInput.email, false),
+      new FindUserByPhoneQuery(createUserInput.phone, false),
     );
     if (user) {
       throw new BadRequestException(USER_ALREADY_EXISTS);

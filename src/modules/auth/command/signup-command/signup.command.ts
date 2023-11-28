@@ -3,5 +3,6 @@ export class SignupCommand {
     public readonly email: string,
     public readonly password: string,
     public readonly displayName: string,
+    public readonly phone: string,
   ) {}
 }

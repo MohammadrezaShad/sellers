@@ -32,4 +32,4 @@ import { UserResolvers } from '@/modules/user/user.resolver';
   exports: [...UseCases],
 })
 @Global()
-export class UsersModule {}
+export class UserModule {}

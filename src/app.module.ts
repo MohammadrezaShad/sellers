@@ -13,7 +13,7 @@ import { AppService } from '@/app.service';
 import { AuthModule } from '@/modules/auth/auth.module';
 import { ImageModule } from '@/modules/image/image.module';
 import { TaxonomysModule } from '@/modules/taxonomy/taxonomy.module';
-import { UsersModule } from '@/modules/user/user.module';
+import { UserModule } from '@/modules/user/user.module';
 
 @Module({
   imports: [
@@ -95,7 +95,7 @@ import { UsersModule } from '@/modules/user/user.module';
       imports: [ConfigModule],
       inject: [ConfigService],
     }),
-    UsersModule,
+    UserModule,
     ImageModule,
     TaxonomysModule,
     AuthModule,

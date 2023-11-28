@@ -24,6 +24,11 @@ export class SearchUserInput extends PaginationInput {
   @IsString()
   email?: string;
 
+  @Field(() => String, { nullable: true })
+  @IsOptional()
+  @IsString()
+  phone?: string;
+
   @Field(() => Boolean, { nullable: true })
   @IsOptional()
   @IsBoolean()

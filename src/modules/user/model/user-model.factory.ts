@@ -13,6 +13,7 @@ export class UserModelFactory implements ModelFactory<UserModel> {
   async create({
     displayName,
     email,
+    phone,
     password,
     isVerified,
     refreshToken,
@@ -23,6 +24,7 @@ export class UserModelFactory implements ModelFactory<UserModel> {
       new ObjectId().toHexString(),
       displayName,
       email,
+      phone,
       isVerified,
       password,
       refreshToken,

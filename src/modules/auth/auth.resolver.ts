@@ -23,6 +23,7 @@ import { RefreshTokenUseCase } from '@/modules/auth/use-case/refresh-token.use-c
 import { SigninUseCase } from '@/modules/auth/use-case/signin.use-case';
 import { SignupUseCase } from '@/modules/auth/use-case/signup.use-case';
 import { TUser } from '@/modules/user/entity/user.entity';
+import { OtpMutation } from './components/otp/dto/otp.dto';
 
 @Resolver(AuthQuery)
 export class AuthQueryResolver {
@@ -69,6 +70,11 @@ export class AuthMutationResolver {
 
   @ResolveField(() => PermissionMutation)
   async permission() {
+    return INITIAL_RESPONSE;
+  }
+
+  @ResolveField(() => OtpMutation)
+  async otp() {
     return INITIAL_RESPONSE;
   }
 

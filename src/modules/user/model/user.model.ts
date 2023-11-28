@@ -8,6 +8,7 @@ export class UserModel extends AggregateRoot {
     private readonly _id: string,
     private readonly displayName: string,
     private readonly email: string,
+    private readonly phone: string,
     private readonly isVerified: boolean,
     private readonly password: string,
     private readonly refreshToken: string[],
@@ -27,6 +28,10 @@ export class UserModel extends AggregateRoot {
 
   getEmail(): string {
     return this.email;
+  }
+
+  getPhone(): string {
+    return this.phone;
   }
 
   getPassword(): string {

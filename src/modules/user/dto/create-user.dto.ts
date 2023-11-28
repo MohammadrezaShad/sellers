@@ -7,6 +7,7 @@ import { UserEntity } from '@/modules/user/entity/user.entity';
 @InputType()
 export class CreateUserInput extends PickType(UserEntity, [
   'email',
+  'phone',
   'displayName',
   'isVerified',
   'refreshToken',

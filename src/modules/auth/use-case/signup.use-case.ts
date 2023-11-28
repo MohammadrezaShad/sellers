@@ -13,10 +13,11 @@ export class SignupUseCase {
     email,
     password,
     displayName,
+    phone,
   }: SignupInput): Promise<SignupOutput> {
     try {
       await this.commandBus.execute(
-        new SignupCommand(email, password, displayName),
+        new SignupCommand(email, password, displayName, phone),
       );
       return { success: true };
     } catch (err) {

@@ -8,6 +8,7 @@ import { UserEntity } from '@/modules/user/entity/user.entity';
 export class SignupInput extends PickType(UserEntity, [
   'email',
   'displayName',
+  'phone',
 ] as const) {
   @Field(() => String)
   @Matches(

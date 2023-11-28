@@ -10,7 +10,7 @@ import {
   USER_NOT_FOUND,
 } from '@/modules/user/constant/error-message.constant';
 import { UserModel } from '@/modules/user/model/user.model';
-import { FindUserByEmailQuery } from '@/modules/user/query/find-by-email/find-user-by-email.query';
+import { FindUserByPhoneQuery } from '@/modules/user/query/find-user-by-phone/find-user-by-phone.query';
 
 @QueryHandler(SigninQuery)
 export class SigninHandler implements IQueryHandler<SigninQuery> {
@@ -20,9 +20,9 @@ export class SigninHandler implements IQueryHandler<SigninQuery> {
     private readonly queryBus: QueryBus,
   ) {}
 
-  async execute({ email, password }: SigninQuery): Promise<SigninOutput> {
+  async execute({ phone, password }: SigninQuery): Promise<SigninOutput> {
     const user: UserModel = await this.queryBus.execute(
-      new FindUserByEmailQuery(email, this.IS_PASSWORD_SELECTED),
+      new FindUserByPhoneQuery(phone, this.IS_PASSWORD_SELECTED),
     );
 
     if (!user) throw new BadRequestException(USER_NOT_FOUND);
@@ -33,7 +33,7 @@ export class SigninHandler implements IQueryHandler<SigninQuery> {
 
     const { accessToken, refreshToken } = await this.tokenHelper.getTokens(
       user.getId(),
-      user.getEmail(),
+      user.getPhone(),
     );
 
     const hashedRefreshToken = await argon2.hash(refreshToken);

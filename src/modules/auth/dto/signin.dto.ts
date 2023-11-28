@@ -4,7 +4,7 @@ import { CoreOutput } from '@/common/dtos/output.dto';
 import { UserEntity } from '@/modules/user/entity/user.entity';
 
 @InputType()
-export class SigninInput extends PickType(UserEntity, ['email']) {
+export class SigninInput extends PickType(UserEntity, ['phone']) {
   @Field(() => String)
   password: string;
 }

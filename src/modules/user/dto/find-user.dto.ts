@@ -16,6 +16,12 @@ export class FindUserByEmailInput {
 }
 
 @InputType()
+export class FindUserByPhoneInput {
+  @Field(() => String)
+  phone: string;
+}
+
+@InputType()
 export class FindUsersByRoleInput {
   @Field(() => String)
   roleId: string;

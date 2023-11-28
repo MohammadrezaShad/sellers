@@ -1,7 +1,7 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Prop } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
-import { IsString, Matches } from 'class-validator';
+import { IsOptional, IsString, Matches } from 'class-validator';
 import { CallbackError } from 'mongoose';
 
 import { Schema } from '@/common/decorators/schema.decorator';
@@ -18,7 +18,13 @@ import { RoleEntity } from '@/modules/auth/components/role/entity/role.entity';
 export class UserEntity extends DefaultEntity {
   @Field(() => String, { nullable: true })
   @Prop()
+  @IsOptional()
   displayName?: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop()
+  @IsOptional()
+  email?: string;
 
   @Prop({
     type: String,
@@ -26,16 +32,18 @@ export class UserEntity extends DefaultEntity {
     unique: true,
   })
   @Field(() => String)
-  email: string;
+  phone: string;
 
   @Field(() => [RoleEntity], { nullable: true })
   @Prop({ type: [String] })
   @IsString({ each: true })
+  @IsOptional()
   roles?: string[];
 
   @Field(() => [PermissionEntity], { nullable: true })
   @Prop({ type: [String] })
   @IsString({ each: true })
+  @IsOptional()
   permissions?: string[];
 
   @Prop({
@@ -51,7 +59,8 @@ export class UserEntity extends DefaultEntity {
         'رمز عبور باید حداقل 8 کاراکتر داشته باشد، حداقل یک حرف بزرگ، یک حرف کوچک، یک عدد و یک کاراکتر خاص داشته باشد',
     },
   )
-  password: string;
+  @IsOptional()
+  password?: string;
 
   @Prop({
     type: Boolean,

@@ -13,7 +13,7 @@ import {
 } from '@/modules/user/dto/find-user.dto';
 import { UserEntityFactory } from '@/modules/user/entity/user.factory';
 import { UserModel } from '@/modules/user/model/user.model';
-import { FindUserByEmailQuery } from '@/modules/user/query/find-by-email/find-user-by-email.query';
+import { FindUserByEmailQuery } from '@/modules/user/query/find-user-by-email/find-user-by-email.query';
 
 @Injectable()
 export class FindUserByEmailUseCase {

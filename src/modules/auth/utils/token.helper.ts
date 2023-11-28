@@ -18,12 +18,12 @@ export class TokenHelper {
     private readonly queryBus: QueryBus,
   ) {}
 
-  async getTokens(userId: string, email: string) {
+  async getTokens(userId: string, phone: string) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
           _id: userId,
-          email,
+          phone,
         },
         {
           secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
@@ -33,7 +33,7 @@ export class TokenHelper {
       this.jwtService.signAsync(
         {
           _id: userId,
-          email,
+          phone,
         },
         {
           secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
@@ -71,7 +71,7 @@ export class TokenHelper {
 
     if (!isMatches) throw new ForbiddenException(ACCESS_DENIED);
 
-    const tokens = await this.getTokens(user.getId(), user.getEmail());
+    const tokens = await this.getTokens(user.getId(), user.getPhone());
 
     const userRefreshToken = user.getRefreshTokens();
 

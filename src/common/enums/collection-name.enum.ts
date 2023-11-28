@@ -8,6 +8,7 @@ export enum CollectionName {
   VIDEO = 'video',
   PERMISSION = 'permission',
   ROLE = 'role',
+  OTP = 'otp',
 }
 
 registerEnumType(CollectionName, {

@@ -14,6 +14,7 @@ export class UserEntityFactory
     return {
       _id: new ObjectId(user.getId()),
       email: user.getEmail(),
+      phone: user.getPhone(),
       password: user.getPassword(),
       isVerified: user.getIsVerified(),
       displayName: user.getDisplayName(),
@@ -29,6 +30,7 @@ export class UserEntityFactory
       _id,
       displayName,
       email,
+      phone,
       password,
       isVerified,
       refreshToken,
@@ -39,6 +41,7 @@ export class UserEntityFactory
       _id.toHexString(),
       displayName,
       email,
+      phone,
       isVerified,
       password,
       refreshToken,

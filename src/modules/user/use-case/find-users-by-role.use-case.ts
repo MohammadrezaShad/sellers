@@ -7,7 +7,7 @@ import {
   FindUsersByRoleInput,
 } from '@/modules/user/dto/find-user.dto';
 import { UserEntity } from '@/modules/user/entity/user.entity';
-import { FindUsersByRoleQuery } from '@/modules/user/query/find-by-role/find-users-by-role.query';
+import { FindUsersByRoleQuery } from '../query/find-users-by-role/find-users-by-role.query';
 
 @Injectable()
 export class FindUsersByRoleUseCase {

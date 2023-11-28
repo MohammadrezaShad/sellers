@@ -8,9 +8,9 @@ import {
 } from '@/common/constants/pagination.constant';
 import { DeleteUserInput } from '@/modules/user/dto/delete-user.dto';
 import {
-  FindManyUserOutput,
   FindUserByEmailInput,
   FindUserByIdInput,
+  FindUserByPhoneInput,
 } from '@/modules/user/dto/find-user.dto';
 import {
   SearchUserInput,
@@ -49,11 +49,23 @@ export class UserRepository {
     return this.userEntityFactory.createFromEntity(user);
   }
 
+  public async findByPhone(
+    { phone }: FindUserByPhoneInput,
+    isPasswordSelected?: boolean,
+  ): Promise<UserModel | null> {
+    const user = await this.userModel
+      .findOne({ phone: phone })
+      .select(isPasswordSelected ? '+password' : undefined)
+      .exec();
+    return this.userEntityFactory.createFromEntity(user);
+  }
+
   async search({
     count: inputCount,
     page: inputPage,
     text,
     email,
+    phone,
     displayName,
     roles,
     permissions,
@@ -77,8 +89,9 @@ export class UserRepository {
           ...(text && {
             $or: [{ $text: { $search: text } }],
           }),
-          ...(email && { email: email }),
           ...(displayName && { displayName: displayName }),
+          ...(email && { email: email }),
+          ...(phone && { phone: phone }),
           ...(roles && { roles: { $in: roles } }),
           ...(permissions && { permissions: { $in: permissions } }),
         },

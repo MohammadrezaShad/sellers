@@ -9,10 +9,10 @@ import { SigninQuery } from '@/modules/auth/query/signin-query/signin-query';
 export class SigninUseCase {
   constructor(private readonly queryBus: QueryBus) {}
 
-  async signin({ email, password }: SigninInput): Promise<SigninOutput> {
+  async signin({ phone, password }: SigninInput): Promise<SigninOutput> {
     try {
       const object = await this.queryBus.execute(
-        new SigninQuery(email, password),
+        new SigninQuery(phone, password),
       );
       return {
         success: true,
