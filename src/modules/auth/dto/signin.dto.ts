@@ -9,6 +9,12 @@ export class SigninInput extends PickType(UserEntity, ['phone']) {
   password: string;
 }
 
+@InputType()
+export class SigninWithOtpInput extends PickType(UserEntity, ['phone']) {
+  @Field(() => Number)
+  code: number;
+}
+
 @ObjectType()
 export class SigninOutput extends CoreOutput {
   @Field(() => String, { nullable: true })

@@ -20,6 +20,7 @@ import { UpdateUserInput } from '@/modules/user/dto/update-user.dto';
 import { TUser, UserEntity } from '@/modules/user/entity/user.entity';
 import { UserEntityFactory } from '@/modules/user/entity/user.factory';
 import { UserModel } from '@/modules/user/model/user.model';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class UserRepository {
@@ -127,6 +128,12 @@ export class UserRepository {
   public async create(userInput: UserModel): Promise<void> {
     const user = new this.userModel(this.userEntityFactory.create(userInput));
     await user.save();
+  }
+
+  public async createWithOtp(phone: string): Promise<UserModel> {
+    const user = new this.userModel({ _id: new ObjectId(), phone: phone });
+    await user.save();
+    return this.userEntityFactory.createFromEntity(user);
   }
 
   public async update({

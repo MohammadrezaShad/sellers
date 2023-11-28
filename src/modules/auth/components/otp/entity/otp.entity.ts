@@ -6,18 +6,21 @@ import { DefaultEntity } from '@/common/entities/default.entity';
 import { CollectionName } from '@/common/enums/collection-name.enum';
 import { type Document } from '@/common/types/document.type';
 import { SchemaFactory } from '@/common/utils/schema-factory.util';
+import { IsNumber, IsString } from 'class-validator';
 
 @InputType('OtpInputType', { isAbstract: true })
 @ObjectType()
 @Schema({ collection: CollectionName.OTP })
 export class OtpEntity extends DefaultEntity {
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   @Prop()
-  phone?: string;
+  @IsString()
+  phone: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => Number)
   @Prop()
-  code?: string;
+  @IsNumber()
+  code: number;
 }
 
 export type TOtpEntity = Document<OtpEntity>;

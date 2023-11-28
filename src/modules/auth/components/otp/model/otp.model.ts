@@ -6,7 +6,7 @@ export class OtpModel extends AggregateRoot {
   constructor(
     private readonly _id: string,
     private readonly phone: string,
-    private readonly code: string,
+    private readonly code: number,
   ) {
     super();
   }
@@ -19,7 +19,7 @@ export class OtpModel extends AggregateRoot {
     return this.phone;
   }
 
-  getCode(): string {
+  getCode(): number {
     return this.code;
   }
 }

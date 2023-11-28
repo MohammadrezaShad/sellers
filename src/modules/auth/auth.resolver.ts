@@ -15,7 +15,11 @@ import { GetUser } from '@/modules/auth/decorators/get-user.decorator';
 import { AuthMutation, AuthQuery } from '@/modules/auth/dto/auth.dto';
 import { LogoutOutput } from '@/modules/auth/dto/logout.dto';
 import { RefreshTokenOutput } from '@/modules/auth/dto/refresh-token.dto';
-import { SigninInput, SigninOutput } from '@/modules/auth/dto/signin.dto';
+import {
+  SigninInput,
+  SigninOutput,
+  SigninWithOtpInput,
+} from '@/modules/auth/dto/signin.dto';
 import { SignupInput, SignupOutput } from '@/modules/auth/dto/signup.dto';
 import { RefreshTokenGuard } from '@/modules/auth/guards/refresh-token.guard';
 import { LogoutUseCase } from '@/modules/auth/use-case/logout.use-case';
@@ -24,10 +28,14 @@ import { SigninUseCase } from '@/modules/auth/use-case/signin.use-case';
 import { SignupUseCase } from '@/modules/auth/use-case/signup.use-case';
 import { TUser } from '@/modules/user/entity/user.entity';
 import { OtpMutation } from './components/otp/dto/otp.dto';
+import { SigninWithOtpUseCase } from './use-case/signin-with-otp.use-case';
 
 @Resolver(AuthQuery)
 export class AuthQueryResolver {
-  constructor(private readonly singinUseCase: SigninUseCase) {}
+  constructor(
+    private readonly singinUseCase: SigninUseCase,
+    private readonly signinWithOtpUseCase: SigninWithOtpUseCase,
+  ) {}
 
   @Query(() => AuthQuery)
   async auth(): Promise<AuthQuery> {
@@ -47,6 +55,13 @@ export class AuthQueryResolver {
   @ResolveField(() => SigninOutput)
   async signin(@Args('input') input: SigninInput): Promise<SigninOutput> {
     return this.singinUseCase.signin(input);
+  }
+
+  @ResolveField(() => SigninOutput)
+  async signinWithOtp(
+    @Args('input') input: SigninWithOtpInput,
+  ): Promise<SigninOutput> {
+    return this.signinWithOtpUseCase.signinWithOtp(input);
   }
 }
 
