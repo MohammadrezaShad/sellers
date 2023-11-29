@@ -1,6 +1,5 @@
 import { Args, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 
-import Permission from '@/common/permissions/permisison.type';
 import { PermissionEntity } from '@/modules/auth/components/permission/entity/permission.entity';
 import {
   CreateRoleInput,
@@ -39,6 +38,7 @@ import { FindRoleByIdsUseCase } from '@/modules/auth/components/role/use-case/fi
 import { SearchRoleUseCase } from '@/modules/auth/components/role/use-case/search-role.use-case';
 import { UpdateRoleUseCase } from '@/modules/auth/components/role/use-case/update-role.use-case';
 import { PanelGuard } from '@/modules/auth/guards/panel.guard';
+import { Permission } from '@/common/permissions/permission-type';
 
 @Resolver(() => RoleQuery)
 export class RoleQueryResolver {

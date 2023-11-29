@@ -2,10 +2,12 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 
 import { CoreOutput } from '@/common/dtos/output.dto';
 import { OtpEntity } from '../entity/otp.entity';
+import { IsObjectId } from '@/common/decorators/is-object-id.decorator';
 
 @InputType()
 export class FindOtpByIdInput {
   @Field(() => String)
+  @IsObjectId()
   id: string;
 }
 

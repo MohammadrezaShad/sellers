@@ -7,18 +7,21 @@ import {
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql/dist/services/gql-execution-context';
 
-import Permission from '@/common/permissions/permisison.type';
 import { FindPermissionByIdsUseCase } from '@/modules/auth/components/permission/use-case/find-permission-by-ids.use-case';
 import { FindRoleByIdsUseCase } from '@/modules/auth/components/role/use-case/find-role-by-ids.use-case';
 import { PERMISSION_KEY } from '@/modules/auth/constants/common.constant';
 import { ACCESS_ERROR_MESSAGE } from '@/modules/auth/constants/error-message.constant';
 import { FindUserByIdUseCase } from '@/modules/user/use-case/find-user-by-id.use-case';
+import { PermissionType } from '@/common/permissions/permission-type';
+import { QueryBus } from '@nestjs/cqrs';
+import { UserModel } from '@/modules/user/model/user.model';
+import { FindUserByIdQuery } from '@/modules/user/query/find-user-by-id/find-user-by-id.query';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private readonly userUseCase: FindUserByIdUseCase,
+    private readonly queryBus: QueryBus,
     private readonly permissionUseCase: FindPermissionByIdsUseCase,
     private readonly roleUseCase: FindRoleByIdsUseCase,
   ) {}
@@ -26,7 +29,7 @@ export class PermissionGuard implements CanActivate {
   async canActivate(ctx: ExecutionContext): Promise<boolean> {
     const context = GqlExecutionContext.create(ctx);
 
-    const permissions = this.reflector.getAllAndOverride<Permission[]>(
+    const permissions = this.reflector.getAllAndOverride<PermissionType[]>(
       PERMISSION_KEY,
       [context.getHandler(), context.getClass()],
     );
@@ -39,16 +42,17 @@ export class PermissionGuard implements CanActivate {
     if (!payload) return false;
 
     // get user object from payload
-    const user = await this.userUseCase.findUserByid({ id: payload._id });
-
+    const user: UserModel = await this.queryBus.execute(
+      new FindUserByIdQuery(payload._id),
+    );
     // get user permissions from user
     const userPermissions = await this.permissionUseCase.findPermissionByids({
-      ids: user.result.permissions,
+      ids: user.getPermissions(),
     });
 
     // get user roles from user
     const userRoles = await this.roleUseCase.findRoleByids({
-      ids: user.result.roles,
+      ids: user.getRoles(),
     });
 
     // get role permission ids from role
@@ -72,11 +76,11 @@ export class PermissionGuard implements CanActivate {
     );
 
     // get permisison title list from all permissions
-    const permissionTitles = allPermisisons?.map(({ title }) => title) || [];
+    const permissionNames = allPermisisons?.map(({ name }) => name) || [];
 
     // check this user have permission or not
     const hasPermission = permissions.some(
-      permission => permissionTitles?.includes(permission),
+      permission => permissionNames?.includes(permission.name),
     );
     if (!hasPermission) {
       throw new ForbiddenException(ACCESS_ERROR_MESSAGE);

@@ -29,11 +29,15 @@ import { SignupUseCase } from '@/modules/auth/use-case/signup.use-case';
 import { TUser } from '@/modules/user/entity/user.entity';
 import { OtpMutation } from './components/otp/dto/otp.dto';
 import { SigninWithOtpUseCase } from './use-case/signin-with-otp.use-case';
+import { AccessTokenGuard } from './guards/access-token.guard';
+import { GetProfileOutput } from './dto/get-profile.dto';
+import { GetProfileUseCase } from './use-case/get-profile.use-case';
 
 @Resolver(AuthQuery)
 export class AuthQueryResolver {
   constructor(
     private readonly singinUseCase: SigninUseCase,
+    private readonly getProfileUseCase: GetProfileUseCase,
     private readonly signinWithOtpUseCase: SigninWithOtpUseCase,
   ) {}
 
@@ -55,6 +59,13 @@ export class AuthQueryResolver {
   @ResolveField(() => SigninOutput)
   async signin(@Args('input') input: SigninInput): Promise<SigninOutput> {
     return this.singinUseCase.signin(input);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @ResolveField(() => GetProfileOutput)
+  async getProfile(@GetUser() user: TUser): Promise<GetProfileOutput> {
+    if (!user) return null;
+    return this.getProfileUseCase.getProfile({ id: user._id });
   }
 
   @ResolveField(() => SigninOutput)

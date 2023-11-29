@@ -24,6 +24,8 @@ import { DeleteImageUseCase } from '@/modules/image/use-case/delete-image.use-ca
 import { SearchImageUseCase } from '@/modules/image/use-case/search-image.use-case';
 import { UpdateImageUseCase } from '@/modules/image/use-case/update-image.use-case';
 import { UploadImageUseCase } from '@/modules/image/use-case/upload-image.use-case';
+import { PanelGuard } from '../auth/guards/panel.guard';
+import { Permission } from '@/common/permissions/permission-type';
 
 @Resolver(() => ImageQuery)
 export class ImageQueryResolver {
@@ -55,6 +57,7 @@ export class ImageMutationResolver {
   }
 
   @ResolveField(() => UploadImageOutput)
+  @PanelGuard<MethodDecorator>(Permission.UPLOAD_IMAGE)
   async uploadImage(
     @Args('input', { type: () => UploadImageInput, nullable: true })
     input: UploadImageInput,
@@ -66,6 +69,7 @@ export class ImageMutationResolver {
   }
 
   @ResolveField(() => UpdateImageOutput)
+  @PanelGuard<MethodDecorator>(Permission.UPDATE)
   async updateImage(
     @Args('input') input: UpdateImageInput,
   ): Promise<UpdateImageOutput> {
@@ -73,6 +77,7 @@ export class ImageMutationResolver {
   }
 
   @ResolveField(() => DeleteImageOutput)
+  @PanelGuard<MethodDecorator>(Permission.DELETE)
   async deleteImage(
     @Args('input') input: DeleteImageInput,
   ): Promise<DeleteImageOutput> {

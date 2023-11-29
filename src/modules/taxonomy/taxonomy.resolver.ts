@@ -32,6 +32,8 @@ import { FindTaxonomyByIdUseCase } from '@/modules/taxonomy/use-case/find-taxono
 import { FindTaxonomyBySlugUseCase } from '@/modules/taxonomy/use-case/find-taxonomy-by-slug.use-case';
 import { SearchTaxonomyUseCase } from '@/modules/taxonomy/use-case/search-taxonomy.use-case';
 import { UpdateTaxonomyUseCase } from '@/modules/taxonomy/use-case/update-taxonomy.use-case';
+import { PanelGuard } from '../auth/guards/panel.guard';
+import { Permission } from '@/common/permissions/permission-type';
 
 @Resolver(() => TaxonomyQuery)
 export class TaxonomyQueryResolver {
@@ -82,6 +84,7 @@ export class TaxonomyMutationResolver {
   }
 
   @ResolveField(() => CreateTaxonomyOutput)
+  @PanelGuard<MethodDecorator>(Permission.CREATE)
   async createTaxonomy(
     @Args('input') input: CreateTaxonomyInput,
   ): Promise<CreateTaxonomyOutput> {
@@ -89,6 +92,7 @@ export class TaxonomyMutationResolver {
   }
 
   @ResolveField(() => DeleteTaxonomyOutput)
+  @PanelGuard<MethodDecorator>(Permission.DELETE)
   async deleteTaxonomy(
     @Args('input') input: DeleteTaxonomyInput,
   ): Promise<CreateTaxonomyOutput> {
@@ -96,6 +100,7 @@ export class TaxonomyMutationResolver {
   }
 
   @ResolveField(() => UpdateTaxonomyOutput)
+  @PanelGuard<MethodDecorator>(Permission.UPDATE)
   async updateTaxonomy(
     @Args('input') input: UpdateTaxonomyInput,
   ): Promise<CreateTaxonomyOutput> {

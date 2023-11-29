@@ -1,6 +1,5 @@
 import { Args, ResolveField, Resolver } from '@nestjs/graphql';
 
-import Permission from '@/common/permissions/permisison.type';
 import {
   CreatePermissionInput,
   CreatePermissionOutput,
@@ -36,6 +35,7 @@ import { FindPermissionByIdsUseCase } from '@/modules/auth/components/permission
 import { SearchPermissionUseCase } from '@/modules/auth/components/permission/use-case/search-permission.use-case';
 import { UpdatePermissionUseCase } from '@/modules/auth/components/permission/use-case/update-permission.use-case';
 import { PanelGuard } from '@/modules/auth/guards/panel.guard';
+import { Permission } from '@/common/permissions/permission-type';
 
 @Resolver(() => PermissionQuery)
 export class PermissionQueryResolver {

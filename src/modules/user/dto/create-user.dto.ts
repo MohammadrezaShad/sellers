@@ -1,8 +1,9 @@
 import { Field, InputType, ObjectType, PickType } from '@nestjs/graphql';
-import { Matches } from 'class-validator';
+import { IsOptional, Matches } from 'class-validator';
 
 import { CoreOutput } from '@/common/dtos/output.dto';
 import { UserEntity } from '@/modules/user/entity/user.entity';
+import { IsObjectId } from '@/common/decorators/is-object-id.decorator';
 
 @InputType()
 export class CreateUserInput extends PickType(UserEntity, [
@@ -23,9 +24,13 @@ export class CreateUserInput extends PickType(UserEntity, [
   password: string;
 
   @Field(() => [String], { nullable: true })
+  @IsObjectId({ each: true })
+  @IsOptional()
   permissions?: string[];
 
   @Field(() => [String], { nullable: true })
+  @IsObjectId({ each: true })
+  @IsOptional()
   roles?: string[];
 }
 

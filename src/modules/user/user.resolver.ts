@@ -8,10 +8,8 @@ import {
 } from '@nestjs/graphql';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
-import Permission from '@/common/permissions/permisison.type';
 import { PermissionEntity } from '@/modules/auth/components/permission/entity/permission.entity';
 import { RoleEntity } from '@/modules/auth/components/role/entity/role.entity';
-import { PanelGuard } from '@/modules/auth/guards/panel.guard';
 import {
   CreateUserInput,
   CreateUserOutput,
@@ -48,6 +46,8 @@ import { UpdateUserUseCase } from '@/modules/user/use-case/update-user.use-case'
 import UserDataLoader from '@/modules/user/user.loader';
 import { FindUserByPhoneUseCase } from './use-case/find-user-by-phone.use-case';
 import { CoreOutput } from '@/common/dtos/output.dto';
+import { PanelGuard } from '../auth/guards/panel.guard';
+import { Permission } from '@/common/permissions/permission-type';
 
 @Resolver(() => UserQuery)
 export class UserQueryResolver {
@@ -114,7 +114,7 @@ export class UserMutationResolver {
   }
 
   @ResolveField(() => CreateUserOutput)
-  // @PanelGuard<MethodDecorator>(Permission.CREATE_USER)
+  @PanelGuard<MethodDecorator>(Permission.CREATE)
   async createUser(
     @Args('input') input: CreateUserInput,
   ): Promise<CreateUserOutput> {
@@ -122,7 +122,7 @@ export class UserMutationResolver {
   }
 
   @ResolveField(() => UpdateUserOutput)
-  // @PanelGuard<MethodDecorator>(Permission.UPDATE_USER)
+  @PanelGuard<MethodDecorator>(Permission.UPDATE)
   async updateUser(
     @Args('input') input: UpdateUserInput,
   ): Promise<UpdateUserOutput> {
@@ -130,7 +130,7 @@ export class UserMutationResolver {
   }
 
   @ResolveField(() => DeleteUserOutput)
-  // @PanelGuard<MethodDecorator>(Permission.DELETE_USER)
+  @PanelGuard<MethodDecorator>(Permission.DELETE)
   async deleteUser(
     @Args('input') input: DeleteUserInput,
   ): Promise<DeleteUserOutput> {
