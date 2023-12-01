@@ -24,10 +24,12 @@ export class SigninHandler implements IQueryHandler<SigninQuery> {
     const user: UserModel = await this.queryBus.execute(
       new FindUserByPhoneQuery(phone, this.IS_PASSWORD_SELECTED),
     );
+    console.log({ user: user });
 
     if (!user) throw new BadRequestException(USER_NOT_FOUND);
 
     const isValid = password && (await user.validatePassword(password));
+    console.log(isValid);
 
     if (!isValid || !user) throw new UnauthorizedException(INCORRECT_PASSWORD);
 

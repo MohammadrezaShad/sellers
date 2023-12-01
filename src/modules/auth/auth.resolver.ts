@@ -28,10 +28,15 @@ import { SigninUseCase } from '@/modules/auth/use-case/signin.use-case';
 import { SignupUseCase } from '@/modules/auth/use-case/signup.use-case';
 import { TUser } from '@/modules/user/entity/user.entity';
 import { OtpMutation } from './components/otp/dto/otp.dto';
-import { SigninWithOtpUseCase } from './use-case/signin-with-otp.use-case';
-import { AccessTokenGuard } from './guards/access-token.guard';
 import { GetProfileOutput } from './dto/get-profile.dto';
+import {
+  PassRecoveryOutput,
+  PassRecoveryWithPhoneInput,
+} from './dto/pass-recovery.dto';
+import { AccessTokenGuard } from './guards/access-token.guard';
 import { GetProfileUseCase } from './use-case/get-profile.use-case';
+import { PassRecoveryWithPhoneUseCase } from './use-case/pass-recovery-with-phone.use-case';
+import { SigninWithOtpUseCase } from './use-case/signin-with-otp.use-case';
 
 @Resolver(AuthQuery)
 export class AuthQueryResolver {
@@ -39,6 +44,7 @@ export class AuthQueryResolver {
     private readonly singinUseCase: SigninUseCase,
     private readonly getProfileUseCase: GetProfileUseCase,
     private readonly signinWithOtpUseCase: SigninWithOtpUseCase,
+    private readonly passRecoveryWithPhoneUseCase: PassRecoveryWithPhoneUseCase,
   ) {}
 
   @Query(() => AuthQuery)
@@ -61,6 +67,13 @@ export class AuthQueryResolver {
     return this.singinUseCase.signin(input);
   }
 
+  @ResolveField(() => SigninOutput)
+  async signinWithOtp(
+    @Args('input') input: SigninWithOtpInput,
+  ): Promise<SigninOutput> {
+    return this.signinWithOtpUseCase.signinWithOtp(input);
+  }
+
   @UseGuards(AccessTokenGuard)
   @ResolveField(() => GetProfileOutput)
   async getProfile(@GetUser() user: TUser): Promise<GetProfileOutput> {
@@ -68,11 +81,11 @@ export class AuthQueryResolver {
     return this.getProfileUseCase.getProfile({ id: user._id });
   }
 
-  @ResolveField(() => SigninOutput)
-  async signinWithOtp(
-    @Args('input') input: SigninWithOtpInput,
-  ): Promise<SigninOutput> {
-    return this.signinWithOtpUseCase.signinWithOtp(input);
+  @ResolveField(() => PassRecoveryOutput)
+  async passRecoveryWithPhone(
+    @Args('input') input: PassRecoveryWithPhoneInput,
+  ): Promise<PassRecoveryOutput> {
+    return this.passRecoveryWithPhoneUseCase.passRecoveryWithPhone(input);
   }
 }
 

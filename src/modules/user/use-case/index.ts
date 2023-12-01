@@ -6,6 +6,7 @@ import { SearchUserUseCase } from '@/modules/user/use-case/search-user.use-case'
 import { UpdateUserUseCase } from '@/modules/user/use-case/update-user.use-case';
 import { CreateUserUseCase } from './create-user.use-case';
 import { FindUserByPhoneUseCase } from './find-user-by-phone.use-case';
+import { UpdatePasswordUseCase } from './update-password.use-case';
 
 export const UseCases = [
   CreateUserUseCase,
@@ -16,4 +17,5 @@ export const UseCases = [
   FindUserByEmailUseCase,
   FindUserByPhoneUseCase,
   FindUsersByRoleUseCase,
+  UpdatePasswordUseCase,
 ];

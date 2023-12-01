@@ -72,8 +72,6 @@ export class UserEntity extends DefaultEntity {
 
   @Prop({ type: [String], nullable: true })
   refreshToken?: string[];
-
-  // validatePassword?: (password: string) => Promise<boolean>;
 }
 
 type TUser = Document<UserEntity>;
