@@ -5,6 +5,7 @@ import { OtpModel } from '../../components/otp/model/otp.model';
 import { FindOtpByPhoneQuery } from '../../components/otp/query/find-otp-by-phone/find-otp-by-phone.query';
 import { PassRecoveryOutput } from '../../dto/pass-recovery.dto';
 import { PassRecoveryWithPhoneQuery } from './pass-recovery-with-phone.query';
+import { ENTERED_CODE_IS_INCORRECT } from '../../constants/error-message.constant';
 
 @QueryHandler(PassRecoveryWithPhoneQuery)
 export class PassRecoveryWithPhoneHandler
@@ -20,7 +21,8 @@ export class PassRecoveryWithPhoneHandler
       new FindOtpByPhoneQuery(phone),
     );
 
-    if (code !== otp.getCode()) throw new BadRequestException('bad code');
+    if (code !== otp?.getCode())
+      throw new BadRequestException(ENTERED_CODE_IS_INCORRECT);
 
     return {
       success: true,
