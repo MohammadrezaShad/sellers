@@ -77,7 +77,7 @@ export class PermissionMutationResolver {
   ) {}
 
   @ResolveField(() => CreatePermissionOutput)
-  @PanelGuard<MethodDecorator>(Permission.CREATE)
+  @PanelGuard<MethodDecorator>(Permission.CREATE_PERMISSION, Permission.CREATE)
   async createPermission(
     @Args('input') input: CreatePermissionInput,
   ): Promise<CreatePermissionOutput> {
@@ -85,7 +85,7 @@ export class PermissionMutationResolver {
   }
 
   @ResolveField(() => UpdatePermissionOutput)
-  @PanelGuard<MethodDecorator>(Permission.UPDATE)
+  @PanelGuard<MethodDecorator>(Permission.UPDATE_PERMISSION, Permission.UPDATE)
   async updatePermission(
     @Args('input') input: UpdatePermissionInput,
   ): Promise<UpdatePermissionOutput> {
@@ -93,7 +93,7 @@ export class PermissionMutationResolver {
   }
 
   @ResolveField(() => DeletePermissionOutput)
-  @PanelGuard<MethodDecorator>(Permission.DELETE)
+  @PanelGuard<MethodDecorator>(Permission.DELETE_PERMISSION, Permission.DELETE)
   async deletePermission(
     @Args('input') input: DeletePermissionInput,
   ): Promise<DeletePermissionOutput> {
@@ -101,7 +101,10 @@ export class PermissionMutationResolver {
   }
 
   @ResolveField(() => DeletePermissionOutput)
-  @PanelGuard<MethodDecorator>(Permission.BULK_DELETE)
+  @PanelGuard<MethodDecorator>(
+    Permission.BULK_DELETE_PERMISSION,
+    Permission.BULK_DELETE,
+  )
   async bulkdeletePermission(
     @Args('input') input: BulkDeletePermissionInput,
   ): Promise<DeletePermissionOutput> {

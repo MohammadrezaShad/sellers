@@ -76,7 +76,7 @@ export class UserEntity extends DefaultEntity {
   @Prop({ type: [String], nullable: true })
   refreshToken?: string[];
 }
-//
+
 type TUser = Document<UserEntity>;
 const UserSchema = SchemaFactory(UserEntity);
 

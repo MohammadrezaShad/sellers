@@ -117,7 +117,7 @@ export class UserMutationResolver {
   }
 
   @ResolveField(() => CreateUserOutput)
-  @PanelGuard<MethodDecorator>(Permission.CREATE_USER)
+  @PanelGuard<MethodDecorator>(Permission.CREATE_USER, Permission.CREATE)
   async createUser(
     @Args('input') input: CreateUserInput,
   ): Promise<CreateUserOutput> {
@@ -125,7 +125,7 @@ export class UserMutationResolver {
   }
 
   @ResolveField(() => UpdateUserOutput)
-  @PanelGuard<MethodDecorator>(Permission.UPDATE_USER)
+  @PanelGuard<MethodDecorator>(Permission.UPDATE_USER, Permission.UPDATE)
   async updateUser(
     @Args('input') input: UpdateUserInput,
   ): Promise<UpdateUserOutput> {
@@ -140,7 +140,7 @@ export class UserMutationResolver {
   }
 
   @ResolveField(() => DeleteUserOutput)
-  @PanelGuard<MethodDecorator>(Permission.DELETE_USER)
+  @PanelGuard<MethodDecorator>(Permission.DELETE_USER, Permission.DELETE)
   async deleteUser(
     @Args('input') input: DeleteUserInput,
   ): Promise<DeleteUserOutput> {
