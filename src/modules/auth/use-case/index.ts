@@ -5,6 +5,7 @@ import { SignupUseCase } from '@/modules/auth/use-case/signup.use-case';
 import { SigninWithOtpUseCase } from './signin-with-otp.use-case';
 import { GetProfileUseCase } from './get-profile.use-case';
 import { PassRecoveryWithPhoneUseCase } from './pass-recovery-with-phone.use-case';
+import { SignupWithOtpUseCase } from './signup-with-otp.use-case';
 
 export const UseCases = [
   SignupUseCase,
@@ -12,6 +13,7 @@ export const UseCases = [
   LogoutUseCase,
   RefreshTokenUseCase,
   SigninWithOtpUseCase,
+  SignupWithOtpUseCase,
   GetProfileUseCase,
   PassRecoveryWithPhoneUseCase,
 ];

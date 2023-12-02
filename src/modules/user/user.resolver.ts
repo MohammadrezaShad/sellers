@@ -55,7 +55,7 @@ import { UpdatePasswordUseCase } from './use-case/update-password.use-case';
 export class UserQueryResolver {
   constructor(
     private readonly searchUserUseCase: SearchUserUseCase,
-    private readonly findUserUseCase: FindUserByIdUseCase,
+    private readonly findUserByIdUseCase: FindUserByIdUseCase,
     private readonly findUserByEmailUseCase: FindUserByEmailUseCase,
     private readonly findUserByPhoneUseCase: FindUserByPhoneUseCase,
     private readonly findUsersByRoleUseCase: FindUsersByRoleUseCase,
@@ -70,7 +70,7 @@ export class UserQueryResolver {
   async findUserById(
     @Args('input') input: FindUserByIdInput,
   ): Promise<FindUserOutput> {
-    return this.findUserUseCase.findUserByid(input);
+    return this.findUserByIdUseCase.findUserByid(input);
   }
 
   @ResolveField(() => FindUserOutput)

@@ -21,5 +21,20 @@ export class SignupInput extends PickType(UserEntity, [
   password: string;
 }
 
+@InputType()
+export class SignupWithOtpInput extends PickType(UserEntity, ['phone']) {
+  @Field(() => Number)
+  code: number;
+}
+
 @ObjectType()
 export class SignupOutput extends CoreOutput {}
+
+@ObjectType()
+export class SignupWithOtpOutput extends CoreOutput {
+  @Field(() => String, { nullable: true })
+  accessToken?: string;
+
+  @Field(() => String, { nullable: true })
+  refreshToken?: string;
+}

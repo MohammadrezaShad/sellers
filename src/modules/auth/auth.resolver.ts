@@ -20,7 +20,12 @@ import {
   SigninOutput,
   SigninWithOtpInput,
 } from '@/modules/auth/dto/signin.dto';
-import { SignupInput, SignupOutput } from '@/modules/auth/dto/signup.dto';
+import {
+  SignupInput,
+  SignupOutput,
+  SignupWithOtpInput,
+  SignupWithOtpOutput,
+} from '@/modules/auth/dto/signup.dto';
 import { RefreshTokenGuard } from '@/modules/auth/guards/refresh-token.guard';
 import { LogoutUseCase } from '@/modules/auth/use-case/logout.use-case';
 import { RefreshTokenUseCase } from '@/modules/auth/use-case/refresh-token.use-case';
@@ -37,6 +42,7 @@ import { AccessTokenGuard } from './guards/access-token.guard';
 import { GetProfileUseCase } from './use-case/get-profile.use-case';
 import { PassRecoveryWithPhoneUseCase } from './use-case/pass-recovery-with-phone.use-case';
 import { SigninWithOtpUseCase } from './use-case/signin-with-otp.use-case';
+import { SignupWithOtpUseCase } from './use-case/signup-with-otp.use-case';
 
 @Resolver(AuthQuery)
 export class AuthQueryResolver {
@@ -95,6 +101,7 @@ export class AuthMutationResolver {
     private readonly signupUseCase: SignupUseCase,
     private readonly logoutUseCase: LogoutUseCase,
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
+    private readonly signupWithOtpUseCase: SignupWithOtpUseCase,
   ) {}
 
   @Mutation(() => AuthMutation)
@@ -120,6 +127,13 @@ export class AuthMutationResolver {
   @ResolveField(() => SignupOutput)
   async signup(@Args('input') signupInput: SignupInput): Promise<SignupOutput> {
     return this.signupUseCase.signup(signupInput);
+  }
+
+  @ResolveField(() => SignupWithOtpOutput)
+  async signupWithOtp(
+    @Args('input') input: SignupWithOtpInput,
+  ): Promise<SignupWithOtpOutput> {
+    return this.signupWithOtpUseCase.signupWithOtp(input);
   }
 
   @UseGuards(RefreshTokenGuard)
