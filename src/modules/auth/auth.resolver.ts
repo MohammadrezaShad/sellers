@@ -20,7 +20,12 @@ import {
   SigninOutput,
   SigninWithOtpInput,
 } from '@/modules/auth/dto/signin.dto';
-import { SignupInput, SignupOutput } from '@/modules/auth/dto/signup.dto';
+import {
+  SignupInput,
+  SignupOutput,
+  SignupWithOtpInput,
+  SignupWithOtpOutput,
+} from '@/modules/auth/dto/signup.dto';
 import { RefreshTokenGuard } from '@/modules/auth/guards/refresh-token.guard';
 import { LogoutUseCase } from '@/modules/auth/use-case/logout.use-case';
 import { RefreshTokenUseCase } from '@/modules/auth/use-case/refresh-token.use-case';
@@ -28,10 +33,16 @@ import { SigninUseCase } from '@/modules/auth/use-case/signin.use-case';
 import { SignupUseCase } from '@/modules/auth/use-case/signup.use-case';
 import { TUser } from '@/modules/user/entity/user.entity';
 import { OtpMutation } from './components/otp/dto/otp.dto';
-import { SigninWithOtpUseCase } from './use-case/signin-with-otp.use-case';
-import { AccessTokenGuard } from './guards/access-token.guard';
 import { GetProfileOutput } from './dto/get-profile.dto';
+import {
+  PassRecoveryOutput,
+  PassRecoveryWithPhoneInput,
+} from './dto/pass-recovery.dto';
+import { AccessTokenGuard } from './guards/access-token.guard';
 import { GetProfileUseCase } from './use-case/get-profile.use-case';
+import { PassRecoveryWithPhoneUseCase } from './use-case/pass-recovery-with-phone.use-case';
+import { SigninWithOtpUseCase } from './use-case/signin-with-otp.use-case';
+import { SignupWithOtpUseCase } from './use-case/signup-with-otp.use-case';
 
 @Resolver(AuthQuery)
 export class AuthQueryResolver {
@@ -39,6 +50,7 @@ export class AuthQueryResolver {
     private readonly singinUseCase: SigninUseCase,
     private readonly getProfileUseCase: GetProfileUseCase,
     private readonly signinWithOtpUseCase: SigninWithOtpUseCase,
+    private readonly passRecoveryWithPhoneUseCase: PassRecoveryWithPhoneUseCase,
   ) {}
 
   @Query(() => AuthQuery)
@@ -61,6 +73,13 @@ export class AuthQueryResolver {
     return this.singinUseCase.signin(input);
   }
 
+  @ResolveField(() => SigninOutput)
+  async signinWithOtp(
+    @Args('input') input: SigninWithOtpInput,
+  ): Promise<SigninOutput> {
+    return this.signinWithOtpUseCase.signinWithOtp(input);
+  }
+
   @UseGuards(AccessTokenGuard)
   @ResolveField(() => GetProfileOutput)
   async getProfile(@GetUser() user: TUser): Promise<GetProfileOutput> {
@@ -68,11 +87,11 @@ export class AuthQueryResolver {
     return this.getProfileUseCase.getProfile({ id: user._id });
   }
 
-  @ResolveField(() => SigninOutput)
-  async signinWithOtp(
-    @Args('input') input: SigninWithOtpInput,
-  ): Promise<SigninOutput> {
-    return this.signinWithOtpUseCase.signinWithOtp(input);
+  @ResolveField(() => PassRecoveryOutput)
+  async passRecoveryWithPhone(
+    @Args('input') input: PassRecoveryWithPhoneInput,
+  ): Promise<PassRecoveryOutput> {
+    return this.passRecoveryWithPhoneUseCase.passRecoveryWithPhone(input);
   }
 }
 
@@ -82,6 +101,7 @@ export class AuthMutationResolver {
     private readonly signupUseCase: SignupUseCase,
     private readonly logoutUseCase: LogoutUseCase,
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
+    private readonly signupWithOtpUseCase: SignupWithOtpUseCase,
   ) {}
 
   @Mutation(() => AuthMutation)
@@ -107,6 +127,13 @@ export class AuthMutationResolver {
   @ResolveField(() => SignupOutput)
   async signup(@Args('input') signupInput: SignupInput): Promise<SignupOutput> {
     return this.signupUseCase.signup(signupInput);
+  }
+
+  @ResolveField(() => SignupWithOtpOutput)
+  async signupWithOtp(
+    @Args('input') input: SignupWithOtpInput,
+  ): Promise<SignupWithOtpOutput> {
+    return this.signupWithOtpUseCase.signupWithOtp(input);
   }
 
   @UseGuards(RefreshTokenGuard)

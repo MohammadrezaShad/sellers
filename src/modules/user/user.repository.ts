@@ -16,7 +16,10 @@ import {
   SearchUserInput,
   SearchUserOutput,
 } from '@/modules/user/dto/search-user.dto';
-import { UpdateUserInput } from '@/modules/user/dto/update-user.dto';
+import {
+  UpdatePasswordInput,
+  UpdateUserInput,
+} from '@/modules/user/dto/update-user.dto';
 import { TUser, UserEntity } from '@/modules/user/entity/user.entity';
 import { UserEntityFactory } from '@/modules/user/entity/user.factory';
 import { UserModel } from '@/modules/user/model/user.model';
@@ -142,6 +145,15 @@ export class UserRepository {
   }: UpdateUserInput): Promise<void> {
     await this.userModel
       .findByIdAndUpdate(userId, { ...restOfArgs }, { new: true })
+      .exec();
+  }
+
+  public async updatePassword({
+    userId,
+    password,
+  }: UpdatePasswordInput): Promise<void> {
+    await this.userModel
+      .findByIdAndUpdate(userId, { password: password }, { new: true })
       .exec();
   }
 

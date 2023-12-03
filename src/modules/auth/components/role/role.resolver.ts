@@ -80,7 +80,7 @@ export class RoleMutationResolver {
   ) {}
 
   @ResolveField(() => CreateRoleOutput)
-  @PanelGuard<MethodDecorator>(Permission.CREATE)
+  @PanelGuard<MethodDecorator>(Permission.CREATE_ROLE, Permission.CREATE)
   async createRole(
     @Args('input') input: CreateRoleInput,
   ): Promise<CreateRoleOutput> {
@@ -88,7 +88,7 @@ export class RoleMutationResolver {
   }
 
   @ResolveField(() => UpdateRoleOutput)
-  @PanelGuard<MethodDecorator>(Permission.UPDATE)
+  @PanelGuard<MethodDecorator>(Permission.UPDATE_ROLE, Permission.UPDATE)
   async updateRole(
     @Args('input') input: UpdateRoleInput,
   ): Promise<UpdateRoleOutput> {
@@ -96,7 +96,7 @@ export class RoleMutationResolver {
   }
 
   @ResolveField(() => DeleteRoleOutput)
-  @PanelGuard<MethodDecorator>(Permission.DELETE)
+  @PanelGuard<MethodDecorator>(Permission.DELETE_ROLE, Permission.DELETE)
   async deleteRole(
     @Args('input') input: DeleteRoleInput,
   ): Promise<DeleteRoleOutput> {
@@ -104,7 +104,10 @@ export class RoleMutationResolver {
   }
 
   @ResolveField(() => DeleteRoleOutput)
-  @PanelGuard<MethodDecorator>(Permission.BULK_DELETE)
+  @PanelGuard<MethodDecorator>(
+    Permission.BULK_DELETE_ROLE,
+    Permission.BULK_DELETE,
+  )
   async bulkDeleteRole(
     @Args('input') input: BulkDeleteRoleInput,
   ): Promise<DeleteRoleOutput> {

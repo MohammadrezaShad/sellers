@@ -69,7 +69,7 @@ export class ImageMutationResolver {
   }
 
   @ResolveField(() => UpdateImageOutput)
-  @PanelGuard<MethodDecorator>(Permission.UPDATE)
+  @PanelGuard<MethodDecorator>(Permission.UPDATE_IMAGE, Permission.UPDATE)
   async updateImage(
     @Args('input') input: UpdateImageInput,
   ): Promise<UpdateImageOutput> {
@@ -77,7 +77,7 @@ export class ImageMutationResolver {
   }
 
   @ResolveField(() => DeleteImageOutput)
-  @PanelGuard<MethodDecorator>(Permission.DELETE)
+  @PanelGuard<MethodDecorator>(Permission.DELETE_IMAGE, Permission.DELETE)
   async deleteImage(
     @Args('input') input: DeleteImageInput,
   ): Promise<DeleteImageOutput> {

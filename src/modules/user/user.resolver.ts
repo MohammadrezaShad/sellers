@@ -31,6 +31,7 @@ import {
   SearchUserOutput,
 } from '@/modules/user/dto/search-user.dto';
 import {
+  UpdatePasswordInput,
   UpdateUserInput,
   UpdateUserOutput,
 } from '@/modules/user/dto/update-user.dto';
@@ -48,12 +49,13 @@ import { FindUserByPhoneUseCase } from './use-case/find-user-by-phone.use-case';
 import { CoreOutput } from '@/common/dtos/output.dto';
 import { PanelGuard } from '../auth/guards/panel.guard';
 import { Permission } from '@/common/permissions/permission-type';
+import { UpdatePasswordUseCase } from './use-case/update-password.use-case';
 
 @Resolver(() => UserQuery)
 export class UserQueryResolver {
   constructor(
     private readonly searchUserUseCase: SearchUserUseCase,
-    private readonly findUserUseCase: FindUserByIdUseCase,
+    private readonly findUserByIdUseCase: FindUserByIdUseCase,
     private readonly findUserByEmailUseCase: FindUserByEmailUseCase,
     private readonly findUserByPhoneUseCase: FindUserByPhoneUseCase,
     private readonly findUsersByRoleUseCase: FindUsersByRoleUseCase,
@@ -68,7 +70,7 @@ export class UserQueryResolver {
   async findUserById(
     @Args('input') input: FindUserByIdInput,
   ): Promise<FindUserOutput> {
-    return this.findUserUseCase.findUserByid(input);
+    return this.findUserByIdUseCase.findUserByid(input);
   }
 
   @ResolveField(() => FindUserOutput)
@@ -106,6 +108,7 @@ export class UserMutationResolver {
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly updateUserUseCase: UpdateUserUseCase,
     private readonly deleteUserUseCase: DeleteUserUseCase,
+    private readonly updatePasswordUseCase: UpdatePasswordUseCase,
   ) {}
 
   @Mutation(() => UserMutation)
@@ -114,7 +117,7 @@ export class UserMutationResolver {
   }
 
   @ResolveField(() => CreateUserOutput)
-  @PanelGuard<MethodDecorator>(Permission.CREATE_USER)
+  @PanelGuard<MethodDecorator>(Permission.CREATE_USER, Permission.CREATE)
   async createUser(
     @Args('input') input: CreateUserInput,
   ): Promise<CreateUserOutput> {
@@ -122,15 +125,22 @@ export class UserMutationResolver {
   }
 
   @ResolveField(() => UpdateUserOutput)
-  @PanelGuard<MethodDecorator>(Permission.UPDATE_USER)
+  @PanelGuard<MethodDecorator>(Permission.UPDATE_USER, Permission.UPDATE)
   async updateUser(
     @Args('input') input: UpdateUserInput,
   ): Promise<UpdateUserOutput> {
     return this.updateUserUseCase.updateUser(input);
   }
 
+  @ResolveField(() => UpdateUserOutput)
+  async updatePassword(
+    @Args('input') input: UpdatePasswordInput,
+  ): Promise<UpdateUserOutput> {
+    return this.updatePasswordUseCase.updatePassword(input);
+  }
+
   @ResolveField(() => DeleteUserOutput)
-  @PanelGuard<MethodDecorator>(Permission.DELETE_USER)
+  @PanelGuard<MethodDecorator>(Permission.DELETE_USER, Permission.DELETE)
   async deleteUser(
     @Args('input') input: DeleteUserInput,
   ): Promise<DeleteUserOutput> {

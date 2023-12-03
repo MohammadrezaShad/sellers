@@ -5,4 +5,14 @@ export class ImagePermission {
     name: 'uploadImage',
     title: 'آپلود عکس',
   };
+
+  static readonly UPDATE_IMAGE: PermissionType = {
+    name: 'updateImage',
+    title: 'آپدیت عکس',
+  };
+
+  static readonly DELETE_IMAGE: PermissionType = {
+    name: 'deleteImage',
+    title: 'حذف عکس',
+  };
 }

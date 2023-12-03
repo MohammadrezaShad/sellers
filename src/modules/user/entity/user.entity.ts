@@ -17,13 +17,15 @@ import { RoleEntity } from '@/modules/auth/components/role/entity/role.entity';
 @Schema({ collection: CollectionName.USER })
 export class UserEntity extends DefaultEntity {
   @Field(() => String, { nullable: true })
-  @Prop()
+  @Prop({ type: String, nullable: true })
   @IsOptional()
+  @IsString()
   displayName?: string;
 
   @Field(() => String, { nullable: true })
-  @Prop()
+  @Prop({ type: String, nullable: true })
   @IsOptional()
+  @IsString()
   email?: string;
 
   @Prop({
@@ -32,6 +34,7 @@ export class UserEntity extends DefaultEntity {
     unique: true,
   })
   @Field(() => String)
+  @IsString()
   phone: string;
 
   @Field(() => [RoleEntity], { nullable: true })
@@ -72,8 +75,6 @@ export class UserEntity extends DefaultEntity {
 
   @Prop({ type: [String], nullable: true })
   refreshToken?: string[];
-
-  // validatePassword?: (password: string) => Promise<boolean>;
 }
 
 type TUser = Document<UserEntity>;
