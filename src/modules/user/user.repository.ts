@@ -53,7 +53,7 @@ export class UserRepository {
     return this.userEntityFactory.createFromEntity(user);
   }
 
-  public async findByPhone(
+  public async findByPhoneAndIsVerified(
     { phone }: FindUserByPhoneInput,
     isPasswordSelected?: boolean,
   ): Promise<UserModel | null> {
@@ -61,6 +61,11 @@ export class UserRepository {
       .findOne({ and: [{ phone: phone }, { isVerified: true }] })
       .select(isPasswordSelected ? '+password' : undefined)
       .exec();
+    return this.userEntityFactory.createFromEntity(user);
+  }
+
+  public async findByPhone(phone: string): Promise<UserModel | null> {
+    const user = await this.userModel.findOne({ phone: phone }).exec();
     return this.userEntityFactory.createFromEntity(user);
   }
 
@@ -133,7 +138,7 @@ export class UserRepository {
     await user.save();
   }
 
-  public async createWithOtp(phone: string): Promise<UserModel> {
+  public async createWithPhone(phone: string): Promise<UserModel> {
     const user = new this.userModel({ _id: new ObjectId(), phone: phone });
     await user.save();
     return this.userEntityFactory.createFromEntity(user);
@@ -153,7 +158,11 @@ export class UserRepository {
     password,
   }: UpdatePasswordInput): Promise<void> {
     await this.userModel
-      .findByIdAndUpdate(userId, { password: password }, { new: true })
+      .findByIdAndUpdate(
+        userId,
+        { password: password, isVerified: true },
+        { new: true },
+      )
       .exec();
   }
 

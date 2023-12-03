@@ -20,3 +20,11 @@ export class PassRecoveryWithEmailInput extends PickType(UserEntity, [
 
 @ObjectType()
 export class PassRecoveryOutput extends CoreOutput {}
+
+@InputType()
+export class ValidateVerificationCodeInput extends PickType(UserEntity, [
+  'phone',
+]) {
+  @Field(() => Number)
+  code: number;
+}

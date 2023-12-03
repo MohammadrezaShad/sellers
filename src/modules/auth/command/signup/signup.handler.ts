@@ -6,11 +6,11 @@ import {
   QueryBus,
 } from '@nestjs/cqrs';
 
-import { SignupCommand } from '@/modules/auth/command/signup-command/signup.command';
+import { SignupCommand } from '@/modules/auth/command/signup/signup.command';
 import { CreateUserCommand } from '@/modules/user/command/create-user';
 import { USER_ALREADY_EXISTS } from '@/modules/user/constant/error-message.constant';
 import { UserModel } from '@/modules/user/model/user.model';
-import { FindUserByPhoneQuery } from '@/modules/user/query/find-user-by-phone/find-user-by-phone.query';
+import { FindUserByPhoneAndIsVerifiedQuery } from '@/modules/user/query/find-user-by-phone-and-is-verified/find-user-by-phone-and-is-verified.query';
 
 @CommandHandler(SignupCommand)
 export class SignupHandler implements ICommandHandler<SignupCommand> {
@@ -20,7 +20,7 @@ export class SignupHandler implements ICommandHandler<SignupCommand> {
   ) {}
   async execute(command: SignupCommand) {
     const user: UserModel = await this.queryBus.execute(
-      new FindUserByPhoneQuery(command.phone, false),
+      new FindUserByPhoneAndIsVerifiedQuery(command.phone, false),
     );
     if (user) {
       throw new BadRequestException(USER_ALREADY_EXISTS);

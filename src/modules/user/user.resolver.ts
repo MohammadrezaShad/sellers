@@ -31,6 +31,7 @@ import {
   SearchUserOutput,
 } from '@/modules/user/dto/search-user.dto';
 import {
+  SetPasswordInput,
   UpdatePasswordInput,
   UpdateUserInput,
   UpdateUserOutput,
@@ -45,11 +46,12 @@ import { FindUsersByRoleUseCase } from '@/modules/user/use-case/find-users-by-ro
 import { SearchUserUseCase } from '@/modules/user/use-case/search-user.use-case';
 import { UpdateUserUseCase } from '@/modules/user/use-case/update-user.use-case';
 import UserDataLoader from '@/modules/user/user.loader';
-import { FindUserByPhoneUseCase } from './use-case/find-user-by-phone.use-case';
+import { FindUserByPhoneAndIsVerifiedUseCase } from './use-case/find-user-by-phone-and-is-verified.use-case';
 import { CoreOutput } from '@/common/dtos/output.dto';
 import { PanelGuard } from '../auth/guards/panel.guard';
 import { Permission } from '@/common/permissions/permission-type';
 import { UpdatePasswordUseCase } from './use-case/update-password.use-case';
+import { SetPasswordUseCase } from './use-case/set-password.use-case';
 
 @Resolver(() => UserQuery)
 export class UserQueryResolver {
@@ -57,7 +59,7 @@ export class UserQueryResolver {
     private readonly searchUserUseCase: SearchUserUseCase,
     private readonly findUserByIdUseCase: FindUserByIdUseCase,
     private readonly findUserByEmailUseCase: FindUserByEmailUseCase,
-    private readonly findUserByPhoneUseCase: FindUserByPhoneUseCase,
+    private readonly findUserByPhoneUseCase: FindUserByPhoneAndIsVerifiedUseCase,
     private readonly findUsersByRoleUseCase: FindUsersByRoleUseCase,
   ) {}
 
@@ -81,10 +83,10 @@ export class UserQueryResolver {
   }
 
   @ResolveField(() => CoreOutput)
-  async findUserByPhone(
+  async findUserByPhoneAndIsVerified(
     @Args('input') input: FindUserByPhoneInput,
   ): Promise<CoreOutput> {
-    return this.findUserByPhoneUseCase.findUserByPhone(input);
+    return this.findUserByPhoneUseCase.findUserByPhoneAndIsVerified(input);
   }
 
   @ResolveField(() => FindManyUserOutput)
@@ -108,6 +110,7 @@ export class UserMutationResolver {
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly updateUserUseCase: UpdateUserUseCase,
     private readonly deleteUserUseCase: DeleteUserUseCase,
+    private readonly setPasswordUseCase: SetPasswordUseCase,
     private readonly updatePasswordUseCase: UpdatePasswordUseCase,
   ) {}
 
@@ -130,6 +133,13 @@ export class UserMutationResolver {
     @Args('input') input: UpdateUserInput,
   ): Promise<UpdateUserOutput> {
     return this.updateUserUseCase.updateUser(input);
+  }
+
+  @ResolveField(() => UpdateUserOutput)
+  async setPassword(
+    @Args('input') input: SetPasswordInput,
+  ): Promise<UpdateUserOutput> {
+    return this.setPasswordUseCase.setPassword(input);
   }
 
   @ResolveField(() => UpdateUserOutput)

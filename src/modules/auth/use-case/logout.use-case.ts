@@ -2,7 +2,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { LogoutCommand } from '@/modules/auth/command/logout-command/logout.command';
+import { LogoutCommand } from '@/modules/auth/command/logout/logout.command';
 import { LogoutOutput } from '@/modules/auth/dto/logout.dto';
 
 @Injectable()

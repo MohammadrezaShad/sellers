@@ -9,14 +9,8 @@ export class FindUserByPhoneHandler
 {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async execute({
-    phone,
-    isPasswordSelected,
-  }: FindUserByPhoneQuery): Promise<UserModel | null> {
-    const user = await this.userRepository.findByPhone(
-      { phone },
-      isPasswordSelected,
-    );
+  async execute({ phone }: FindUserByPhoneQuery): Promise<UserModel | null> {
+    const user = await this.userRepository.findByPhone(phone);
     return user;
   }
 }

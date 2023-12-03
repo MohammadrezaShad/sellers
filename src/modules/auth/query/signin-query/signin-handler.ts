@@ -10,7 +10,7 @@ import {
   USER_NOT_FOUND,
 } from '@/modules/user/constant/error-message.constant';
 import { UserModel } from '@/modules/user/model/user.model';
-import { FindUserByPhoneQuery } from '@/modules/user/query/find-user-by-phone/find-user-by-phone.query';
+import { FindUserByPhoneAndIsVerifiedQuery } from '@/modules/user/query/find-user-by-phone-and-is-verified/find-user-by-phone-and-is-verified.query';
 
 @QueryHandler(SigninQuery)
 export class SigninHandler implements IQueryHandler<SigninQuery> {
@@ -22,7 +22,7 @@ export class SigninHandler implements IQueryHandler<SigninQuery> {
 
   async execute({ phone, password }: SigninQuery): Promise<SigninOutput> {
     const user: UserModel = await this.queryBus.execute(
-      new FindUserByPhoneQuery(phone, this.IS_PASSWORD_SELECTED),
+      new FindUserByPhoneAndIsVerifiedQuery(phone, this.IS_PASSWORD_SELECTED),
     );
     console.log({ user: user });
 

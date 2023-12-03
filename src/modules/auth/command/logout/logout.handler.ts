@@ -7,7 +7,7 @@ import {
 } from '@nestjs/cqrs';
 import * as argon2 from 'argon2';
 
-import { LogoutCommand } from '@/modules/auth/command/logout-command/logout.command';
+import { LogoutCommand } from '@/modules/auth/command/logout/logout.command';
 import { ACCESS_DENIED } from '@/modules/auth/constants/error-message.constant';
 import { UpdateUserCommand } from '@/modules/user/command/update-user/update-user.command';
 import { UserModel } from '@/modules/user/model/user.model';

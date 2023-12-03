@@ -2,7 +2,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { SignupCommand } from '@/modules/auth/command/signup-command/signup.command';
+import { SignupCommand } from '@/modules/auth/command/signup/signup.command';
 import { SignupInput, SignupOutput } from '@/modules/auth/dto/signup.dto';
 
 @Injectable()

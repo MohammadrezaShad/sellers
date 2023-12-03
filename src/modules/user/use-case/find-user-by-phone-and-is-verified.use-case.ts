@@ -13,22 +13,22 @@ import {
 } from '@/modules/user/dto/find-user.dto';
 import { UserEntityFactory } from '@/modules/user/entity/user.factory';
 import { UserModel } from '@/modules/user/model/user.model';
-import { FindUserByPhoneQuery } from '../query/find-user-by-phone/find-user-by-phone.query';
+import { FindUserByPhoneAndIsVerifiedQuery } from '../query/find-user-by-phone-and-is-verified/find-user-by-phone-and-is-verified.query';
 
 @Injectable()
-export class FindUserByPhoneUseCase {
+export class FindUserByPhoneAndIsVerifiedUseCase {
   constructor(
     private readonly queryBus: QueryBus,
     private readonly userFactory: UserEntityFactory,
   ) {}
 
-  async findUserByPhone(
+  async findUserByPhoneAndIsVerified(
     { phone }: FindUserByPhoneInput,
     isPasswordSelected?: boolean,
   ): Promise<FindUserOutput> {
     try {
       const user: UserModel = await this.queryBus.execute(
-        new FindUserByPhoneQuery(phone, isPasswordSelected),
+        new FindUserByPhoneAndIsVerifiedQuery(phone, isPasswordSelected),
       );
 
       if (!user) {

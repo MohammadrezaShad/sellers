@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { RefreshTokenCommand } from '@/modules/auth/command/refresh-token-command/refresh-token.command';
+import { RefreshTokenCommand } from '@/modules/auth/command/refresh-token/refresh-token.command';
 import { RefreshTokenOutput } from '@/modules/auth/dto/refresh-token.dto';
 import { TokenHelper } from '@/modules/auth/utils/token.helper';
 

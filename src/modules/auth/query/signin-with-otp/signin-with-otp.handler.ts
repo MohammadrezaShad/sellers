@@ -4,7 +4,7 @@ import * as argon2 from 'argon2';
 import { SigninOutput } from '@/modules/auth/dto/signin.dto';
 import { TokenHelper } from '@/modules/auth/utils/token.helper';
 import { UserModel } from '@/modules/user/model/user.model';
-import { FindUserByPhoneQuery } from '@/modules/user/query/find-user-by-phone/find-user-by-phone.query';
+import { FindUserByPhoneAndIsVerifiedQuery } from '@/modules/user/query/find-user-by-phone-and-is-verified/find-user-by-phone-and-is-verified.query';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { OtpModel } from '../../components/otp/model/otp.model';
 import { FindOtpByPhoneQuery } from '../../components/otp/query/find-otp-by-phone/find-otp-by-phone.query';
@@ -30,7 +30,7 @@ export class SigninWithOtpHandler implements IQueryHandler<SigninWithOtpQuery> {
       throw new BadRequestException(ENTERED_CODE_IS_INCORRECT);
 
     const user: UserModel = await this.queryBus.execute(
-      new FindUserByPhoneQuery(phone),
+      new FindUserByPhoneAndIsVerifiedQuery(phone),
     );
 
     if (!user) throw new NotFoundException(NO_ACCOUNT_WITH_THIS_NUMBER);

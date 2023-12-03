@@ -1,3 +1,3 @@
-export class FindUserByPhoneQuery {
+export class SignupWithPhoneCommand {
   constructor(public readonly phone: string) {}
 }
