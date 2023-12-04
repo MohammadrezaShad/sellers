@@ -8,6 +8,8 @@ import {
 } from '@nestjs/graphql';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
+import { CoreOutput } from '@/common/dtos/output.dto';
+import { Permission } from '@/common/permissions/permission-type';
 import { PermissionEntity } from '@/modules/auth/components/permission/entity/permission.entity';
 import { RoleEntity } from '@/modules/auth/components/role/entity/role.entity';
 import {
@@ -46,11 +48,9 @@ import { FindUsersByRoleUseCase } from '@/modules/user/use-case/find-users-by-ro
 import { SearchUserUseCase } from '@/modules/user/use-case/search-user.use-case';
 import { UpdateUserUseCase } from '@/modules/user/use-case/update-user.use-case';
 import UserDataLoader from '@/modules/user/user.loader';
-import { FindUserByPhoneAndIsVerifiedUseCase } from './use-case/find-user-by-phone-and-is-verified.use-case';
-import { CoreOutput } from '@/common/dtos/output.dto';
+
 import { PanelGuard } from '../auth/guards/panel.guard';
-import { Permission } from '@/common/permissions/permission-type';
-import { UpdatePasswordUseCase } from './use-case/update-password.use-case';
+import { FindUserByPhoneAndIsVerifiedUseCase } from './use-case/find-user-by-phone-and-is-verified.use-case';
 import { SetPasswordUseCase } from './use-case/set-password.use-case';
 
 @Resolver(() => UserQuery)
@@ -111,7 +111,6 @@ export class UserMutationResolver {
     private readonly updateUserUseCase: UpdateUserUseCase,
     private readonly deleteUserUseCase: DeleteUserUseCase,
     private readonly setPasswordUseCase: SetPasswordUseCase,
-    private readonly updatePasswordUseCase: UpdatePasswordUseCase,
   ) {}
 
   @Mutation(() => UserMutation)
@@ -140,13 +139,6 @@ export class UserMutationResolver {
     @Args('input') input: SetPasswordInput,
   ): Promise<UpdateUserOutput> {
     return this.setPasswordUseCase.setPassword(input);
-  }
-
-  @ResolveField(() => UpdateUserOutput)
-  async updatePassword(
-    @Args('input') input: UpdatePasswordInput,
-  ): Promise<UpdateUserOutput> {
-    return this.updatePasswordUseCase.updatePassword(input);
   }
 
   @ResolveField(() => DeleteUserOutput)

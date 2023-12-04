@@ -31,6 +31,7 @@ import {
 import { RefreshTokenGuard } from '@/modules/auth/guards/refresh-token.guard';
 import { LogoutUseCase } from '@/modules/auth/use-case/logout.use-case';
 import { RefreshTokenUseCase } from '@/modules/auth/use-case/refresh-token.use-case';
+import { SendPassRecoverySmsUseCase } from '@/modules/auth/use-case/send-pass-recovery-sms.use-case';
 import { SigninUseCase } from '@/modules/auth/use-case/signin.use-case';
 import { SigninWithOtpUseCase } from '@/modules/auth/use-case/signin-with-otp.use-case';
 import { SignupUseCase } from '@/modules/auth/use-case/signup.use-case';
@@ -41,6 +42,7 @@ import { GetProfileOutput } from './dto/get-profile.dto';
 import {
   PassRecoveryOutput,
   PassRecoveryWithPhoneInput,
+  SendPassRecoverySmsInput,
   ValidateVerificationCodeInput,
 } from './dto/pass-recovery.dto';
 import { AccessTokenGuard } from './guards/access-token.guard';
@@ -57,6 +59,7 @@ export class AuthQueryResolver {
     private readonly getProfileUseCase: GetProfileUseCase,
     private readonly sendSigninSmsUseCase: SendSigninSmsUseCase,
     private readonly signinWithOtpUseCase: SigninWithOtpUseCase,
+    private readonly sendPassRecoverySmsUseCase: SendPassRecoverySmsUseCase,
     private readonly passRecoveryWithPhoneUseCase: PassRecoveryWithPhoneUseCase,
     private readonly validateVerificationCodeUseCase: ValidateVerificationCodeUseCase,
   ) {}
@@ -107,6 +110,13 @@ export class AuthQueryResolver {
     @Args('input') input: ValidateVerificationCodeInput,
   ): Promise<CoreOutput> {
     return this.validateVerificationCodeUseCase.validateVerificationCode(input);
+  }
+
+  @ResolveField(() => CoreOutput)
+  async sendPassRecoverySms(
+    @Args('input') input: SendPassRecoverySmsInput,
+  ): Promise<CoreOutput> {
+    return this.sendPassRecoverySmsUseCase.sendPassRecoverySms(input);
   }
 
   @ResolveField(() => PassRecoveryOutput)
