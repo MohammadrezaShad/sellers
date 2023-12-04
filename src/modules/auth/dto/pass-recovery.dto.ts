@@ -1,6 +1,8 @@
+import { Field, InputType, ObjectType, PickType } from '@nestjs/graphql';
+import { Matches } from 'class-validator';
+
 import { CoreOutput } from '@/common/dtos/output.dto';
 import { UserEntity } from '@/modules/user/entity/user.entity';
-import { Field, InputType, ObjectType, PickType } from '@nestjs/graphql';
 
 @InputType()
 export class PassRecoveryWithPhoneInput extends PickType(UserEntity, [
@@ -8,6 +10,15 @@ export class PassRecoveryWithPhoneInput extends PickType(UserEntity, [
 ]) {
   @Field(() => String)
   code: string;
+
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/,
+    {
+      message:
+        'رمز عبور باید حداقل 8 کاراکتر داشته باشد، حداقل یک حرف بزرگ، یک حرف کوچک، یک عدد و یک کاراکتر خاص داشته باشد',
+    },
+  )
+  password: string;
 }
 
 @InputType()
@@ -17,6 +28,9 @@ export class PassRecoveryWithEmailInput extends PickType(UserEntity, [
   @Field(() => String)
   code: string;
 }
+
+@InputType()
+export class SendPassRecoverySmsInput extends PickType(UserEntity, ['phone']) {}
 
 @ObjectType()
 export class PassRecoveryOutput extends CoreOutput {}

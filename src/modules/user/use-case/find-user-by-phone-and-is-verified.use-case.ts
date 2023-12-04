@@ -13,6 +13,7 @@ import {
 } from '@/modules/user/dto/find-user.dto';
 import { UserEntityFactory } from '@/modules/user/entity/user.factory';
 import { UserModel } from '@/modules/user/model/user.model';
+
 import { FindUserByPhoneAndIsVerifiedQuery } from '../query/find-user-by-phone-and-is-verified/find-user-by-phone-and-is-verified.query';
 
 @Injectable()

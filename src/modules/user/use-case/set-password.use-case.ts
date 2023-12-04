@@ -7,17 +7,17 @@ import {
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
+import { OtpModel } from '@/modules/auth/components/otp/model/otp.model';
+import { FindOtpByPhoneQuery } from '@/modules/auth/components/otp/query/find-otp-by-phone/find-otp-by-phone.query';
+import { ENTERED_CODE_IS_INCORRECT } from '@/modules/auth/constants/error-message.constant';
 import { UpdatePasswordCommand } from '@/modules/user/command/update-password/update-password.command';
 import {
   SetPasswordInput,
-  UpdatePasswordInput,
   UpdateUserOutput,
 } from '@/modules/user/dto/update-user.dto';
-import { FindUserByPhoneQuery } from '../query/find-user-by-phone/find-user-by-phone.query';
-import { FindOtpByPhoneQuery } from '@/modules/auth/components/otp/query/find-otp-by-phone/find-otp-by-phone.query';
-import { OtpModel } from '@/modules/auth/components/otp/model/otp.model';
-import { ENTERED_CODE_IS_INCORRECT } from '@/modules/auth/constants/error-message.constant';
+
 import { UserModel } from '../model/user.model';
+import { FindUserByPhoneQuery } from '../query/find-user-by-phone/find-user-by-phone.query';
 
 @Injectable()
 export class SetPasswordUseCase {

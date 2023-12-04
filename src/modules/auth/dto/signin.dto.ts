@@ -18,6 +18,11 @@ export class SendSigninWitOtpInput extends PickType(UserEntity, ['phone']) {
   code?: string;
 }
 
+export class SigninWitOtpInput extends PickType(UserEntity, ['phone']) {
+  @Field(() => String)
+  code?: string;
+}
+
 @ObjectType()
 export class SigninOutput extends CoreOutput {
   @Field(() => String, { nullable: true })

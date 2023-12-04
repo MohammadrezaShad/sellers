@@ -4,9 +4,9 @@ import { FindUserByIdUseCase } from '@/modules/user/use-case/find-user-by-id.use
 import { FindUsersByRoleUseCase } from '@/modules/user/use-case/find-users-by-role.use-case';
 import { SearchUserUseCase } from '@/modules/user/use-case/search-user.use-case';
 import { UpdateUserUseCase } from '@/modules/user/use-case/update-user.use-case';
+
 import { CreateUserUseCase } from './create-user.use-case';
 import { FindUserByPhoneAndIsVerifiedUseCase } from './find-user-by-phone-and-is-verified.use-case';
-import { UpdatePasswordUseCase } from './update-password.use-case';
 import { SetPasswordUseCase } from './set-password.use-case';
 
 export const UseCases = [
@@ -18,6 +18,5 @@ export const UseCases = [
   FindUserByEmailUseCase,
   FindUserByPhoneAndIsVerifiedUseCase,
   FindUsersByRoleUseCase,
-  UpdatePasswordUseCase,
   SetPasswordUseCase,
 ];

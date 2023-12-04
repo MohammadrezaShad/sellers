@@ -1,6 +1,8 @@
 import { LogoutUseCase } from '@/modules/auth/use-case/logout.use-case';
 import { RefreshTokenUseCase } from '@/modules/auth/use-case/refresh-token.use-case';
+import { SendPassRecoverySmsUseCase } from '@/modules/auth/use-case/send-pass-recovery-sms.use-case';
 import { SigninUseCase } from '@/modules/auth/use-case/signin.use-case';
+import { SigninWithOtpUseCase } from '@/modules/auth/use-case/signin-with-otp.use-case';
 import { SignupUseCase } from '@/modules/auth/use-case/signup.use-case';
 
 import { GetProfileUseCase } from './get-profile.use-case';
@@ -15,7 +17,9 @@ export const UseCases = [
   LogoutUseCase,
   RefreshTokenUseCase,
   SendSigninSmsUseCase,
+  SigninWithOtpUseCase,
   GetProfileUseCase,
+  SendPassRecoverySmsUseCase,
   PassRecoveryWithPhoneUseCase,
   SignupWithPhoneUseCase,
   ValidateVerificationCodeUseCase,
