@@ -20,5 +20,10 @@ export class PermissionEntity extends DefaultEntity {
   title?: string;
 }
 
-export type TPermissionEntity = Document<PermissionEntity>;
-export const PermissionEntitySchema = SchemaFactory(PermissionEntity);
+type TPermissionEntity = Document<PermissionEntity>;
+const PermissionEntitySchema = SchemaFactory(PermissionEntity);
+
+PermissionEntitySchema.index({ name: 'text', title: 'text' });
+PermissionEntitySchema.index({ name: 1, title: 1 });
+
+export { PermissionEntitySchema, TPermissionEntity };

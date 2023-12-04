@@ -54,10 +54,30 @@ export class RoleRepository {
     return this.roleFactory.createFromEntity(role);
   }
 
+  public async findOneItemByName(
+    name: string,
+    id: string | null,
+  ): Promise<RoleModel | null> {
+    const role = await this.roleModel.findOne({
+      $and: [{ name: name }, { _id: { $ne: id } }],
+    });
+    return this.roleFactory.createFromEntity(role);
+  }
+
+  public async findOneItemByTitle(
+    title: string,
+    id: string | null,
+  ): Promise<RoleModel | null> {
+    const role = await this.roleModel.findOne({
+      $and: [{ title: title }, { _id: { $ne: id } }],
+    });
+    return this.roleFactory.createFromEntity(role);
+  }
+
   async search({
     count: inputCount,
     page: inputPage,
-    name,
+    text,
   }: SearchRoleInput): Promise<SearchRoleResults> {
     const count = inputCount || DEFAULT_COUNT;
     const page = inputPage || DEFAULT_PAGE;
@@ -65,7 +85,7 @@ export class RoleRepository {
     const searchResults = await this.roleModel.aggregate([
       {
         $match: {
-          ...(name && { name: name }),
+          ...(text && { $text: { $search: text } }),
         },
       },
       {
@@ -95,6 +115,11 @@ export class RoleRepository {
       totalCount,
       totalPages: Math.ceil(totalCount / inputCount),
     };
+  }
+
+  public async directCreate(roleEntity: RoleEntity): Promise<void> {
+    const role = new this.roleModel(roleEntity);
+    await role.save();
   }
 
   public async create(roleInput: RoleModel): Promise<void> {

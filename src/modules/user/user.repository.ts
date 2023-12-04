@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { ObjectId } from 'mongodb';
 import { Model, PipelineStage } from 'mongoose';
 
 import {
@@ -23,7 +24,6 @@ import {
 import { TUser, UserEntity } from '@/modules/user/entity/user.entity';
 import { UserEntityFactory } from '@/modules/user/entity/user.factory';
 import { UserModel } from '@/modules/user/model/user.model';
-import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class UserRepository {
@@ -168,5 +168,9 @@ export class UserRepository {
 
   public async delete({ userId }: DeleteUserInput): Promise<void> {
     await this.userModel.findByIdAndDelete(userId).exec();
+  }
+
+  public async removeRoleFromUsers(roleId: string) {
+    await this.userModel.updateMany({}, { $pull: { roles: roleId } });
   }
 }
