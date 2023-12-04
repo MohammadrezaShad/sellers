@@ -34,8 +34,8 @@ export class SetPasswordInput {
   @Field(() => String)
   phone: string;
 
-  @Field(() => Number)
-  verificationCode: number;
+  @Field(() => String)
+  verificationCode: string;
 
   @Field(() => String)
   @Matches(

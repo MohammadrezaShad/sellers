@@ -11,6 +11,7 @@ import { CreateOtpCommand } from '../components/otp/command/create-otp/create-ot
 import { SignupWithPhoneInput, SignupWithPhoneOutput } from '../dto/signup.dto';
 import { UserModel } from '@/modules/user/model/user.model';
 import { FindUserByPhoneQuery } from '@/modules/user/query/find-user-by-phone/find-user-by-phone.query';
+import { generateOTP } from '@/common/utils/generate-otp.util';
 
 @Injectable()
 export class SignupWithPhoneUseCase {
@@ -27,22 +28,19 @@ export class SignupWithPhoneUseCase {
         new FindUserByPhoneQuery(phone),
       );
 
+      const code = generateOTP();
+
       if (user && user.getIsVerified()) {
         throw new BadRequestException('this phone number is exists');
       } else if (user && !user.getIsVerified()) {
-        // generate code and send code with sms to input phone
-        // for now use fake code
-        const fakeCode = 2244;
         await this.commandBus.execute(
-          new CreateOtpCommand({ phone: phone, code: fakeCode }),
+          new CreateOtpCommand({ phone: phone, code: code }),
         );
       } else {
         await this.commandBus.execute(new SignupWithPhoneCommand(phone));
-        // generate code and send code with sms to input phone
-        // for now use fake code
-        const fakeCode = 2233;
+
         await this.commandBus.execute(
-          new CreateOtpCommand({ phone: phone, code: fakeCode }),
+          new CreateOtpCommand({ phone: phone, code: code }),
         );
       }
       return {

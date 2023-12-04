@@ -6,16 +6,16 @@ import { Field, InputType, ObjectType, PickType } from '@nestjs/graphql';
 export class PassRecoveryWithPhoneInput extends PickType(UserEntity, [
   'phone',
 ]) {
-  @Field(() => Number)
-  code: number;
+  @Field(() => String)
+  code: string;
 }
 
 @InputType()
 export class PassRecoveryWithEmailInput extends PickType(UserEntity, [
   'email',
 ]) {
-  @Field(() => Number)
-  code: number;
+  @Field(() => String)
+  code: string;
 }
 
 @ObjectType()
@@ -25,6 +25,6 @@ export class PassRecoveryOutput extends CoreOutput {}
 export class ValidateVerificationCodeInput extends PickType(UserEntity, [
   'phone',
 ]) {
-  @Field(() => Number)
-  code: number;
+  @Field(() => String)
+  code: string;
 }

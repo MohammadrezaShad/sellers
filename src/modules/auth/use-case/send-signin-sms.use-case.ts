@@ -12,6 +12,7 @@ import { USER_NOT_FOUND } from '@/modules/auth/constants/error-message.constant'
 import { SendSigninSmsInput } from '@/modules/auth/dto/signin.dto';
 import { UserModel } from '@/modules/user/model/user.model';
 import { FindUserByPhoneAndIsVerifiedQuery } from '@/modules/user/query/find-user-by-phone-and-is-verified/find-user-by-phone-and-is-verified.query';
+import { generateOTP } from '@/common/utils/generate-otp.util';
 
 @Injectable()
 export class SendSigninSmsUseCase {
@@ -27,12 +28,8 @@ export class SendSigninSmsUseCase {
       );
       if (!user) throw new NotFoundException(USER_NOT_FOUND);
 
-      // generate code and send code with sms to input phone
-      // for now use fake code
-
-      const fakeCode = 2244;
       await this.commandBus.execute(
-        new CreateOtpCommand({ phone: phone, code: fakeCode }),
+        new CreateOtpCommand({ phone: phone, code: generateOTP() }),
       );
       return {
         success: true,
