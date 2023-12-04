@@ -3,17 +3,17 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { OtpModel } from '@/modules/auth/components/otp/model/otp.model';
 import { FindOtpByPhoneQuery } from '@/modules/auth/components/otp/query/find-otp-by-phone/find-otp-by-phone.query';
 import { ENTERED_CODE_IS_INCORRECT } from '@/modules/auth/constants/error-message.constant';
-import {
-  SendSigninWitOtpInput,
-  SigninOutput,
-} from '@/modules/auth/dto/signin.dto';
+import { SigninOutput, SigninWitOtpInput } from '@/modules/auth/dto/signin.dto';
 import { SigninWithOtpQuery } from '@/modules/auth/query/signin-with-otp/signin-with-otp.query';
+import { UserModel } from '@/modules/user/model/user.model';
+import { FindUserByPhoneQuery } from '@/modules/user/query/find-user-by-phone/find-user-by-phone.query';
 
 @Injectable()
 export class SigninWithOtpUseCase {
@@ -22,8 +22,13 @@ export class SigninWithOtpUseCase {
   async signinWithOtp({
     phone,
     code,
-  }: SendSigninWitOtpInput): Promise<SigninOutput> {
+  }: SigninWitOtpInput): Promise<SigninOutput> {
     try {
+      const user: UserModel = await this.queryBus.execute(
+        new FindUserByPhoneQuery(phone),
+      );
+      if (!user) throw new NotFoundException('Phone not found');
+
       const otp: OtpModel = await this.queryBus.execute(
         new FindOtpByPhoneQuery(phone),
       );

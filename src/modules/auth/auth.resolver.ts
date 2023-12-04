@@ -20,6 +20,7 @@ import {
   SendSigninSmsInput,
   SigninInput,
   SigninOutput,
+  SigninWitOtpInput,
 } from '@/modules/auth/dto/signin.dto';
 import {
   SignupInput,
@@ -31,6 +32,7 @@ import { RefreshTokenGuard } from '@/modules/auth/guards/refresh-token.guard';
 import { LogoutUseCase } from '@/modules/auth/use-case/logout.use-case';
 import { RefreshTokenUseCase } from '@/modules/auth/use-case/refresh-token.use-case';
 import { SigninUseCase } from '@/modules/auth/use-case/signin.use-case';
+import { SigninWithOtpUseCase } from '@/modules/auth/use-case/signin-with-otp.use-case';
 import { SignupUseCase } from '@/modules/auth/use-case/signup.use-case';
 import { TUser } from '@/modules/user/entity/user.entity';
 
@@ -54,6 +56,7 @@ export class AuthQueryResolver {
     private readonly singinUseCase: SigninUseCase,
     private readonly getProfileUseCase: GetProfileUseCase,
     private readonly sendSigninSmsUseCase: SendSigninSmsUseCase,
+    private readonly signinWithOtpUseCase: SigninWithOtpUseCase,
     private readonly passRecoveryWithPhoneUseCase: PassRecoveryWithPhoneUseCase,
     private readonly validateVerificationCodeUseCase: ValidateVerificationCodeUseCase,
   ) {}
@@ -83,6 +86,13 @@ export class AuthQueryResolver {
     @Args('input') input: SendSigninSmsInput,
   ): Promise<CoreOutput> {
     return this.sendSigninSmsUseCase.sendSigninSms(input);
+  }
+
+  @ResolveField(() => SigninOutput)
+  async signinWithOtp(
+    @Args('input') input: SigninWitOtpInput,
+  ): Promise<SigninOutput> {
+    return this.signinWithOtpUseCase.signinWithOtp(input);
   }
 
   @UseGuards(AccessTokenGuard)

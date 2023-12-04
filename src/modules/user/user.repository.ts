@@ -58,7 +58,7 @@ export class UserRepository {
     isPasswordSelected?: boolean,
   ): Promise<UserModel | null> {
     const user = await this.userModel
-      .findOne({ and: [{ phone: phone }, { isVerified: true }] })
+      .findOne({ $and: [{ phone: phone }, { isVerified: true }] })
       .select(isPasswordSelected ? '+password' : undefined)
       .exec();
     return this.userEntityFactory.createFromEntity(user);

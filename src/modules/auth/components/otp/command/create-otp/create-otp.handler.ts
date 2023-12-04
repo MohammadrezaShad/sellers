@@ -2,10 +2,10 @@ import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler, QueryBus } from '@nestjs/cqrs';
 
 import { OTP_ALREADY_EXISTS } from '../../constant/error-message.constant';
-import { OtpModelFactory } from '../../model/otp-model.factory';
 import { OtpModel } from '../../model/otp.model';
-import { CreateOtpCommand } from './create-otp.command';
+import { OtpModelFactory } from '../../model/otp-model.factory';
 import { FindOtpByPhoneQuery } from '../../query/find-otp-by-phone/find-otp-by-phone.query';
+import { CreateOtpCommand } from './create-otp.command';
 
 @CommandHandler(CreateOtpCommand)
 export class CreateOtpHandler implements ICommandHandler<CreateOtpCommand> {
