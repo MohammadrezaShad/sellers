@@ -7,15 +7,22 @@ import {
   BulkDeletePermissionInput,
   DeletePermissionOutput,
 } from '@/modules/auth/components/permission/dto/delete-permission.dto';
+import { PermissionHelepr } from '@/modules/auth/components/permission/helper/permission-helper';
 
 @Injectable()
 export class BulkDeletePermissionUseCase {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly permissionHelper: PermissionHelepr,
+  ) {}
 
   async bulkDeletePermission(
     input: BulkDeletePermissionInput,
   ): Promise<DeletePermissionOutput> {
     try {
+      for (const id of input.ids) {
+        await this.permissionHelper.validatePermissionId(id);
+      }
       await this.commandBus.execute(new BulkDeletePermissionCommand(input));
       return { success: true };
     } catch (err) {

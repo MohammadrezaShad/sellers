@@ -13,6 +13,7 @@ import { UseCases } from '@/modules/auth/use-case';
 import { TokenHelper } from '@/modules/auth/utils/token.helper';
 import { UserEntityFactory } from '@/modules/user/entity/user.factory';
 import { UserModule } from '@/modules/user/user.module';
+
 import { OtpModule } from './components/otp/otp.module';
 
 @Module({

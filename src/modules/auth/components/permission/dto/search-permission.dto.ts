@@ -13,7 +13,7 @@ export class SearchPermissionInput extends PaginationInput {
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
-  name?: string;
+  text?: string;
 }
 
 @ObjectType('SearchPermissionOutput')

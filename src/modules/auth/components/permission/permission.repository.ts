@@ -58,10 +58,34 @@ export class PermissionRepository {
     return this.permissionFactory.createFromEntity(role);
   }
 
+  public async findOneItemByName(
+    name: string,
+    id: string | null,
+  ): Promise<PermissionModel | null> {
+    const role = await this.permissionModel.findOne({
+      $and: [{ name: name }, { _id: { $ne: id } }],
+    });
+    return this.permissionFactory.createFromEntity(role);
+  }
+
+  public async findOneItemByTitle(
+    title: string,
+    id: string | null,
+  ): Promise<PermissionModel | null> {
+    const role = await this.permissionModel.findOne({
+      $and: [{ title: title }, { _id: { $ne: id } }],
+    });
+    return this.permissionFactory.createFromEntity(role);
+  }
+
+  public async findAll(): Promise<PermissionEntity[]> {
+    return await this.permissionModel.find().exec();
+  }
+
   async search({
     count: inputCount,
     page: inputPage,
-    name,
+    text,
   }: SearchPermissionInput): Promise<SearchPermissionResults> {
     const count = inputCount || DEFAULT_COUNT;
     const page = inputPage || DEFAULT_PAGE;
@@ -69,7 +93,7 @@ export class PermissionRepository {
     const searchResults = await this.permissionModel.aggregate([
       {
         $match: {
-          ...(name && { name: name }),
+          ...(text && { $text: { $search: text } }),
         },
       },
       {

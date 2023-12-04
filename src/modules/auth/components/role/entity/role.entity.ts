@@ -27,5 +27,10 @@ export class RoleEntity extends DefaultEntity {
   permissions?: string[];
 }
 
-export type TRoleEntity = Document<RoleEntity>;
-export const RoleEntitySchema = SchemaFactory(RoleEntity);
+type TRoleEntity = Document<RoleEntity>;
+const RoleEntitySchema = SchemaFactory(RoleEntity);
+
+RoleEntitySchema.index({ name: 'text', title: 'text' });
+RoleEntitySchema.index({ name: 1, title: 1 });
+
+export { RoleEntitySchema, TRoleEntity };

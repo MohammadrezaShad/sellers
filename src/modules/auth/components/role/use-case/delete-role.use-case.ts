@@ -7,13 +7,18 @@ import {
   DeleteRoleInput,
   DeleteRoleOutput,
 } from '@/modules/auth/components/role/dto/delete-role.dto';
+import { RoleHelepr } from '@/modules/auth/components/role/helper/role-helper';
 
 @Injectable()
 export class DeleteRoleUseCase {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly roleHelper: RoleHelepr,
+  ) {}
 
   async deleteRole(input: DeleteRoleInput): Promise<DeleteRoleOutput> {
     try {
+      await this.roleHelper.validateRoleId(input.roleId);
       await this.commandBus.execute(new DeleteRoleCommand(input));
       return { success: true };
     } catch (err) {

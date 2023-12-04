@@ -8,6 +8,7 @@ import {
   RoleEntitySchema,
 } from '@/modules/auth/components/role/entity/role.entity';
 import { RoleEntityFactory } from '@/modules/auth/components/role/entity/role.factory';
+import { RoleHelepr } from '@/modules/auth/components/role/helper/role-helper';
 import { RoleModelFactory } from '@/modules/auth/components/role/model/role-model.factory';
 import { QueryHandlers } from '@/modules/auth/components/role/query';
 import RoleDataLoader from '@/modules/auth/components/role/role.loader';
@@ -31,8 +32,9 @@ import { UseCases } from '@/modules/auth/components/role/use-case';
     RoleRepository,
     RoleModelFactory,
     RoleEntityFactory,
+    RoleHelepr,
   ],
-  exports: [...UseCases],
+  exports: [...UseCases, RoleRepository],
 })
 @Global()
 export class RoleModule {}
