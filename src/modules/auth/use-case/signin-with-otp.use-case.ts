@@ -5,7 +5,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { OtpModel } from '@/modules/auth/components/otp/model/otp.model';
 import { FindOtpByPhoneQuery } from '@/modules/auth/components/otp/query/find-otp-by-phone/find-otp-by-phone.query';
@@ -14,10 +14,14 @@ import { SigninOutput, SigninWitOtpInput } from '@/modules/auth/dto/signin.dto';
 import { SigninWithOtpQuery } from '@/modules/auth/query/signin-with-otp/signin-with-otp.query';
 import { UserModel } from '@/modules/user/model/user.model';
 import { FindUserByPhoneQuery } from '@/modules/user/query/find-user-by-phone/find-user-by-phone.query';
+import { DeleteOtpCommand } from '../components/otp/command/delete-otp/delete-otp.command';
 
 @Injectable()
 export class SigninWithOtpUseCase {
-  constructor(private readonly queryBus: QueryBus) {}
+  constructor(
+    private readonly queryBus: QueryBus,
+    private readonly commandBus: CommandBus,
+  ) {}
 
   async signinWithOtp({
     phone,
@@ -37,6 +41,8 @@ export class SigninWithOtpUseCase {
         throw new BadRequestException(ENTERED_CODE_IS_INCORRECT);
 
       const object = await this.queryBus.execute(new SigninWithOtpQuery(phone));
+
+      await this.commandBus.execute(new DeleteOtpCommand({ id: otp.getId() }));
 
       return {
         success: true,

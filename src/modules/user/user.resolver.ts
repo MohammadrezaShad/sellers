@@ -33,8 +33,6 @@ import {
   SearchUserOutput,
 } from '@/modules/user/dto/search-user.dto';
 import {
-  SetPasswordInput,
-  UpdatePasswordInput,
   UpdateUserInput,
   UpdateUserOutput,
 } from '@/modules/user/dto/update-user.dto';
@@ -51,7 +49,6 @@ import UserDataLoader from '@/modules/user/user.loader';
 
 import { PanelGuard } from '../auth/guards/panel.guard';
 import { FindUserByPhoneAndIsVerifiedUseCase } from './use-case/find-user-by-phone-and-is-verified.use-case';
-import { SetPasswordUseCase } from './use-case/set-password.use-case';
 
 @Resolver(() => UserQuery)
 export class UserQueryResolver {
@@ -110,7 +107,6 @@ export class UserMutationResolver {
     private readonly createUserUseCase: CreateUserUseCase,
     private readonly updateUserUseCase: UpdateUserUseCase,
     private readonly deleteUserUseCase: DeleteUserUseCase,
-    private readonly setPasswordUseCase: SetPasswordUseCase,
   ) {}
 
   @Mutation(() => UserMutation)
@@ -132,13 +128,6 @@ export class UserMutationResolver {
     @Args('input') input: UpdateUserInput,
   ): Promise<UpdateUserOutput> {
     return this.updateUserUseCase.updateUser(input);
-  }
-
-  @ResolveField(() => UpdateUserOutput)
-  async setPassword(
-    @Args('input') input: SetPasswordInput,
-  ): Promise<UpdateUserOutput> {
-    return this.setPasswordUseCase.setPassword(input);
   }
 
   @ResolveField(() => DeleteUserOutput)

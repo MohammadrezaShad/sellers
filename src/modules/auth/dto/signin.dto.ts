@@ -10,14 +10,6 @@ export class SigninInput extends PickType(UserEntity, ['phone']) {
 }
 
 @InputType()
-export class SendSigninSmsInput extends PickType(UserEntity, ['phone']) {}
-
-@InputType()
-export class SendSigninWitOtpInput extends PickType(UserEntity, ['phone']) {
-  @Field(() => String)
-  code?: string;
-}
-
 export class SigninWitOtpInput extends PickType(UserEntity, ['phone']) {
   @Field(() => String)
   code?: string;

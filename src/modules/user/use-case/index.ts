@@ -7,7 +7,6 @@ import { UpdateUserUseCase } from '@/modules/user/use-case/update-user.use-case'
 
 import { CreateUserUseCase } from './create-user.use-case';
 import { FindUserByPhoneAndIsVerifiedUseCase } from './find-user-by-phone-and-is-verified.use-case';
-import { SetPasswordUseCase } from './set-password.use-case';
 
 export const UseCases = [
   CreateUserUseCase,
@@ -18,5 +17,4 @@ export const UseCases = [
   FindUserByEmailUseCase,
   FindUserByPhoneAndIsVerifiedUseCase,
   FindUsersByRoleUseCase,
-  SetPasswordUseCase,
 ];

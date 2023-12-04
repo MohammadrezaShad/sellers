@@ -14,10 +14,9 @@ import { UpdatePasswordCommand } from '@/modules/user/command/update-password/up
 import { UserModel } from '@/modules/user/model/user.model';
 import { FindUserByPhoneQuery } from '@/modules/user/query/find-user-by-phone/find-user-by-phone.query';
 
-import {
-  PassRecoveryOutput,
-  PassRecoveryWithPhoneInput,
-} from '../dto/pass-recovery.dto';
+import { CoreOutput } from '@/common/dtos/output.dto';
+import { SetPasswordInput } from '../dto/pass-recovery.dto';
+import { DeleteOtpCommand } from '../components/otp/command/delete-otp/delete-otp.command';
 
 @Injectable()
 export class PassRecoveryWithPhoneUseCase {
@@ -28,9 +27,9 @@ export class PassRecoveryWithPhoneUseCase {
 
   async passRecoveryWithPhone({
     phone,
-    code,
+    verificationCode,
     password,
-  }: PassRecoveryWithPhoneInput): Promise<PassRecoveryOutput> {
+  }: SetPasswordInput): Promise<CoreOutput> {
     try {
       const user: UserModel = await this.queryBus.execute(
         new FindUserByPhoneQuery(phone),
@@ -41,12 +40,14 @@ export class PassRecoveryWithPhoneUseCase {
         new FindOtpByPhoneQuery(phone),
       );
 
-      if (code !== otp?.getCode())
+      if (verificationCode !== otp?.getCode())
         throw new BadRequestException(ENTERED_CODE_IS_INCORRECT);
 
       await this.commandBus.execute(
         new UpdatePasswordCommand(user.getId(), password),
       );
+
+      await this.commandBus.execute(new DeleteOtpCommand({ id: otp.getId() }));
 
       return { success: true };
     } catch (error) {

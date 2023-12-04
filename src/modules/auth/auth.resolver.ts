@@ -17,7 +17,6 @@ import { AuthMutation, AuthQuery } from '@/modules/auth/dto/auth.dto';
 import { LogoutOutput } from '@/modules/auth/dto/logout.dto';
 import { RefreshTokenOutput } from '@/modules/auth/dto/refresh-token.dto';
 import {
-  SendSigninSmsInput,
   SigninInput,
   SigninOutput,
   SigninWitOtpInput,
@@ -31,7 +30,6 @@ import {
 import { RefreshTokenGuard } from '@/modules/auth/guards/refresh-token.guard';
 import { LogoutUseCase } from '@/modules/auth/use-case/logout.use-case';
 import { RefreshTokenUseCase } from '@/modules/auth/use-case/refresh-token.use-case';
-import { SendPassRecoverySmsUseCase } from '@/modules/auth/use-case/send-pass-recovery-sms.use-case';
 import { SigninUseCase } from '@/modules/auth/use-case/signin.use-case';
 import { SigninWithOtpUseCase } from '@/modules/auth/use-case/signin-with-otp.use-case';
 import { SignupUseCase } from '@/modules/auth/use-case/signup.use-case';
@@ -40,27 +38,24 @@ import { TUser } from '@/modules/user/entity/user.entity';
 import { OtpMutation } from './components/otp/dto/otp.dto';
 import { GetProfileOutput } from './dto/get-profile.dto';
 import {
-  PassRecoveryOutput,
-  PassRecoveryWithPhoneInput,
-  SendPassRecoverySmsInput,
+  SetPasswordInput,
   ValidateVerificationCodeInput,
 } from './dto/pass-recovery.dto';
 import { AccessTokenGuard } from './guards/access-token.guard';
 import { GetProfileUseCase } from './use-case/get-profile.use-case';
 import { PassRecoveryWithPhoneUseCase } from './use-case/pass-recovery-with-phone.use-case';
-import { SendSigninSmsUseCase } from './use-case/send-signin-sms.use-case';
 import { SignupWithPhoneUseCase } from './use-case/signup-with-phone.use-case';
 import { ValidateVerificationCodeUseCase } from './use-case/validate-verification-code.use-case';
+import { SendVerificationCodeInput } from './dto/send-verification-code.dto';
+import { SendVerificationCodeUseCase } from './use-case/send-verification-code.use-case';
+import { SetPasswordUseCase } from './use-case/set-user-password.use-case';
 
 @Resolver(AuthQuery)
 export class AuthQueryResolver {
   constructor(
-    private readonly singinUseCase: SigninUseCase,
     private readonly getProfileUseCase: GetProfileUseCase,
-    private readonly sendSigninSmsUseCase: SendSigninSmsUseCase,
+    private readonly singinUseCase: SigninUseCase,
     private readonly signinWithOtpUseCase: SigninWithOtpUseCase,
-    private readonly sendPassRecoverySmsUseCase: SendPassRecoverySmsUseCase,
-    private readonly passRecoveryWithPhoneUseCase: PassRecoveryWithPhoneUseCase,
     private readonly validateVerificationCodeUseCase: ValidateVerificationCodeUseCase,
   ) {}
 
@@ -84,13 +79,6 @@ export class AuthQueryResolver {
     return this.singinUseCase.signin(input);
   }
 
-  @ResolveField(() => CoreOutput)
-  async sendSigninSms(
-    @Args('input') input: SendSigninSmsInput,
-  ): Promise<CoreOutput> {
-    return this.sendSigninSmsUseCase.sendSigninSms(input);
-  }
-
   @ResolveField(() => SigninOutput)
   async signinWithOtp(
     @Args('input') input: SigninWitOtpInput,
@@ -111,29 +99,18 @@ export class AuthQueryResolver {
   ): Promise<CoreOutput> {
     return this.validateVerificationCodeUseCase.validateVerificationCode(input);
   }
-
-  @ResolveField(() => CoreOutput)
-  async sendPassRecoverySms(
-    @Args('input') input: SendPassRecoverySmsInput,
-  ): Promise<CoreOutput> {
-    return this.sendPassRecoverySmsUseCase.sendPassRecoverySms(input);
-  }
-
-  @ResolveField(() => PassRecoveryOutput)
-  async passRecoveryWithPhone(
-    @Args('input') input: PassRecoveryWithPhoneInput,
-  ): Promise<PassRecoveryOutput> {
-    return this.passRecoveryWithPhoneUseCase.passRecoveryWithPhone(input);
-  }
 }
 
 @Resolver(AuthMutation)
 export class AuthMutationResolver {
   constructor(
     private readonly signupUseCase: SignupUseCase,
+    private readonly signupWithPhoneUseCase: SignupWithPhoneUseCase,
     private readonly logoutUseCase: LogoutUseCase,
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
-    private readonly signupWithPhoneUseCase: SignupWithPhoneUseCase,
+    private readonly sendVerificationCodeUseCase: SendVerificationCodeUseCase,
+    private readonly setPasswordUseCase: SetPasswordUseCase,
+    private readonly passRecoveryWithPhoneUseCase: PassRecoveryWithPhoneUseCase,
   ) {}
 
   @Mutation(() => AuthMutation)
@@ -185,6 +162,27 @@ export class AuthMutationResolver {
   ): Promise<RefreshTokenOutput> {
     const userId = user._id;
     return this.refreshTokenUseCase.refreshToken(userId, refreshToken);
+  }
+
+  @ResolveField(() => CoreOutput)
+  async setPassword(
+    @Args('input') input: SetPasswordInput,
+  ): Promise<CoreOutput> {
+    return this.setPasswordUseCase.setPassword(input);
+  }
+
+  @ResolveField(() => CoreOutput)
+  async sendVerificationCode(
+    @Args('input') input: SendVerificationCodeInput,
+  ): Promise<CoreOutput> {
+    return this.sendVerificationCodeUseCase.sendVerificationCode(input);
+  }
+
+  @ResolveField(() => CoreOutput)
+  async passRecoveryWithPhone(
+    @Args('input') input: SetPasswordInput,
+  ): Promise<CoreOutput> {
+    return this.passRecoveryWithPhoneUseCase.passRecoveryWithPhone(input);
   }
 }
 

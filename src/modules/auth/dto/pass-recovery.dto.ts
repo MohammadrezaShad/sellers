@@ -1,16 +1,17 @@
 import { Field, InputType, ObjectType, PickType } from '@nestjs/graphql';
 import { Matches } from 'class-validator';
 
-import { CoreOutput } from '@/common/dtos/output.dto';
 import { UserEntity } from '@/modules/user/entity/user.entity';
 
 @InputType()
-export class PassRecoveryWithPhoneInput extends PickType(UserEntity, [
-  'phone',
-]) {
+export class SetPasswordInput {
   @Field(() => String)
-  code: string;
+  phone: string;
 
+  @Field(() => String)
+  verificationCode: string;
+
+  @Field(() => String)
   @Matches(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/,
     {
@@ -20,20 +21,6 @@ export class PassRecoveryWithPhoneInput extends PickType(UserEntity, [
   )
   password: string;
 }
-
-@InputType()
-export class PassRecoveryWithEmailInput extends PickType(UserEntity, [
-  'email',
-]) {
-  @Field(() => String)
-  code: string;
-}
-
-@InputType()
-export class SendPassRecoverySmsInput extends PickType(UserEntity, ['phone']) {}
-
-@ObjectType()
-export class PassRecoveryOutput extends CoreOutput {}
 
 @InputType()
 export class ValidateVerificationCodeInput extends PickType(UserEntity, [

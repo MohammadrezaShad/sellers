@@ -29,24 +29,5 @@ export class UpdatePasswordInput {
   password: string;
 }
 
-@InputType()
-export class SetPasswordInput {
-  @Field(() => String)
-  phone: string;
-
-  @Field(() => String)
-  verificationCode: string;
-
-  @Field(() => String)
-  @Matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/,
-    {
-      message:
-        'رمز عبور باید حداقل 8 کاراکتر داشته باشد، حداقل یک حرف بزرگ، یک حرف کوچک، یک عدد و یک کاراکتر خاص داشته باشد',
-    },
-  )
-  password: string;
-}
-
 @ObjectType()
 export class UpdateUserOutput extends CoreOutput {}
