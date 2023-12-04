@@ -2,6 +2,7 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { INITIAL_RESPONSE } from '@/common/constants/initial-response.constant';
+import { CoreOutput } from '@/common/dtos/output.dto';
 import {
   PermissionMutation,
   PermissionQuery,
@@ -16,9 +17,9 @@ import { AuthMutation, AuthQuery } from '@/modules/auth/dto/auth.dto';
 import { LogoutOutput } from '@/modules/auth/dto/logout.dto';
 import { RefreshTokenOutput } from '@/modules/auth/dto/refresh-token.dto';
 import {
+  SendSigninSmsInput,
   SigninInput,
   SigninOutput,
-  SigninWithOtpInput,
 } from '@/modules/auth/dto/signin.dto';
 import {
   SignupInput,
@@ -32,6 +33,7 @@ import { RefreshTokenUseCase } from '@/modules/auth/use-case/refresh-token.use-c
 import { SigninUseCase } from '@/modules/auth/use-case/signin.use-case';
 import { SignupUseCase } from '@/modules/auth/use-case/signup.use-case';
 import { TUser } from '@/modules/user/entity/user.entity';
+
 import { OtpMutation } from './components/otp/dto/otp.dto';
 import { GetProfileOutput } from './dto/get-profile.dto';
 import {
@@ -42,17 +44,16 @@ import {
 import { AccessTokenGuard } from './guards/access-token.guard';
 import { GetProfileUseCase } from './use-case/get-profile.use-case';
 import { PassRecoveryWithPhoneUseCase } from './use-case/pass-recovery-with-phone.use-case';
-import { SigninWithOtpUseCase } from './use-case/signin-with-otp.use-case';
+import { SendSigninSmsUseCase } from './use-case/send-signin-sms.use-case';
 import { SignupWithPhoneUseCase } from './use-case/signup-with-phone.use-case';
 import { ValidateVerificationCodeUseCase } from './use-case/validate-verification-code.use-case';
-import { CoreOutput } from '@/common/dtos/output.dto';
 
 @Resolver(AuthQuery)
 export class AuthQueryResolver {
   constructor(
     private readonly singinUseCase: SigninUseCase,
     private readonly getProfileUseCase: GetProfileUseCase,
-    private readonly signinWithOtpUseCase: SigninWithOtpUseCase,
+    private readonly sendSigninSmsUseCase: SendSigninSmsUseCase,
     private readonly passRecoveryWithPhoneUseCase: PassRecoveryWithPhoneUseCase,
     private readonly validateVerificationCodeUseCase: ValidateVerificationCodeUseCase,
   ) {}
@@ -77,11 +78,11 @@ export class AuthQueryResolver {
     return this.singinUseCase.signin(input);
   }
 
-  @ResolveField(() => SigninOutput)
-  async signinWithOtp(
-    @Args('input') input: SigninWithOtpInput,
-  ): Promise<SigninOutput> {
-    return this.signinWithOtpUseCase.signinWithOtp(input);
+  @ResolveField(() => CoreOutput)
+  async sendSigninSms(
+    @Args('input') input: SendSigninSmsInput,
+  ): Promise<CoreOutput> {
+    return this.sendSigninSmsUseCase.sendSigninSms(input);
   }
 
   @UseGuards(AccessTokenGuard)

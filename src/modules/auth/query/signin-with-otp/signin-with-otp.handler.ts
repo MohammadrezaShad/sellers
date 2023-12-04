@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { IQueryHandler, QueryBus, QueryHandler } from '@nestjs/cqrs';
 import * as argon2 from 'argon2';
 
@@ -5,14 +6,9 @@ import { SigninOutput } from '@/modules/auth/dto/signin.dto';
 import { TokenHelper } from '@/modules/auth/utils/token.helper';
 import { UserModel } from '@/modules/user/model/user.model';
 import { FindUserByPhoneAndIsVerifiedQuery } from '@/modules/user/query/find-user-by-phone-and-is-verified/find-user-by-phone-and-is-verified.query';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { OtpModel } from '../../components/otp/model/otp.model';
-import { FindOtpByPhoneQuery } from '../../components/otp/query/find-otp-by-phone/find-otp-by-phone.query';
+
+import { NO_ACCOUNT_WITH_THIS_NUMBER } from '../../constants/error-message.constant';
 import { SigninWithOtpQuery } from './signin-with-otp.query';
-import {
-  ENTERED_CODE_IS_INCORRECT,
-  NO_ACCOUNT_WITH_THIS_NUMBER,
-} from '../../constants/error-message.constant';
 
 @QueryHandler(SigninWithOtpQuery)
 export class SigninWithOtpHandler implements IQueryHandler<SigninWithOtpQuery> {
@@ -21,14 +17,7 @@ export class SigninWithOtpHandler implements IQueryHandler<SigninWithOtpQuery> {
     private readonly queryBus: QueryBus,
   ) {}
 
-  async execute({ phone, code }: SigninWithOtpQuery): Promise<SigninOutput> {
-    const otp: OtpModel = await this.queryBus.execute(
-      new FindOtpByPhoneQuery(phone),
-    );
-
-    if (code !== otp?.getCode())
-      throw new BadRequestException(ENTERED_CODE_IS_INCORRECT);
-
+  async execute({ phone }: SigninWithOtpQuery): Promise<SigninOutput> {
     const user: UserModel = await this.queryBus.execute(
       new FindUserByPhoneAndIsVerifiedQuery(phone),
     );

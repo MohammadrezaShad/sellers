@@ -1,19 +1,19 @@
 // user-registration.use-case.ts
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException,
 } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 
+import { OtpModel } from '@/modules/auth/components/otp/model/otp.model';
+import { FindOtpByPhoneQuery } from '@/modules/auth/components/otp/query/find-otp-by-phone/find-otp-by-phone.query';
+import { ENTERED_CODE_IS_INCORRECT } from '@/modules/auth/constants/error-message.constant';
 import {
+  SendSigninWitOtpInput,
   SigninOutput,
-  SigninWithOtpInput,
 } from '@/modules/auth/dto/signin.dto';
-import { SigninWithOtpQuery } from '../query/signin-with-otp/signin-with-otp.query';
-import { UserModel } from '@/modules/user/model/user.model';
-import { FindUserByPhoneAndIsVerifiedQuery } from '@/modules/user/query/find-user-by-phone-and-is-verified/find-user-by-phone-and-is-verified.query';
-import { CoreOutput } from '@/common/dtos/output.dto';
+import { SigninWithOtpQuery } from '@/modules/auth/query/signin-with-otp/signin-with-otp.query';
 
 @Injectable()
 export class SigninWithOtpUseCase {
@@ -22,22 +22,21 @@ export class SigninWithOtpUseCase {
   async signinWithOtp({
     phone,
     code,
-  }: SigninWithOtpInput): Promise<CoreOutput> {
+  }: SendSigninWitOtpInput): Promise<SigninOutput> {
     try {
-      const user: UserModel = await this.queryBus.execute(
-        new FindUserByPhoneAndIsVerifiedQuery(phone),
+      const otp: OtpModel = await this.queryBus.execute(
+        new FindOtpByPhoneQuery(phone),
       );
-      if (!user) throw new NotFoundException('User not found');
 
-      // generate code and send code with sms to input phone
-      // for now use fake code
-      const fakeCode = 2244;
+      if (code !== otp?.getCode())
+        throw new BadRequestException(ENTERED_CODE_IS_INCORRECT);
 
-      // const object = await this.queryBus.execute(
-      //   new SigninWithOtpQuery(phone, code),
-      // );
+      const object = await this.queryBus.execute(new SigninWithOtpQuery(phone));
+
       return {
         success: true,
+        accessToken: object.accessToken,
+        refreshToken: object.refreshToken,
       };
     } catch (error) {
       throw new InternalServerErrorException(error);
