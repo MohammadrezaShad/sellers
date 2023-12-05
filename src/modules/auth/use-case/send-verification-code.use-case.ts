@@ -7,14 +7,14 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { CoreOutput } from '@/common/dtos/output.dto';
+import { generateOTP } from '@/common/utils/generate-otp.util';
 import { CreateOtpCommand } from '@/modules/auth/components/otp/command/create-otp/create-otp.command';
 import { USER_NOT_FOUND } from '@/modules/auth/constants/error-message.constant';
+import { SmsService } from '@/modules/sms/sms.service';
 import { UserModel } from '@/modules/user/model/user.model';
 import { FindUserByPhoneAndIsVerifiedQuery } from '@/modules/user/query/find-user-by-phone-and-is-verified/find-user-by-phone-and-is-verified.query';
 
-import { generateOTP } from '@/common/utils/generate-otp.util';
 import { SendVerificationCodeInput } from '../dto/send-verification-code.dto';
-import { SmsService } from '@/modules/sms/sms.service';
 
 @Injectable()
 export class SendVerificationCodeUseCase {
@@ -38,7 +38,7 @@ export class SendVerificationCodeUseCase {
       await this.commandBus.execute(
         new CreateOtpCommand({ phone: phone, code: code }),
       );
-      //
+
       await this.smsService.sendSms(phone, code);
       return {
         success: true,

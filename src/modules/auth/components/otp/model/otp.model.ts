@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class OtpModel extends AggregateRoot {
@@ -21,5 +22,9 @@ export class OtpModel extends AggregateRoot {
 
   getCode(): string {
     return this.code;
+  }
+
+  validateCode(code: string) {
+    return this.code && bcrypt.compare(code, this.code);
   }
 }

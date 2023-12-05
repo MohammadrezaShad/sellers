@@ -7,6 +7,7 @@ import {
 import { QueryBus } from '@nestjs/cqrs';
 
 import { CoreOutput } from '@/common/dtos/output.dto';
+
 import { OtpModel } from '../components/otp/model/otp.model';
 import { FindOtpByPhoneQuery } from '../components/otp/query/find-otp-by-phone/find-otp-by-phone.query';
 import { ENTERED_CODE_IS_INCORRECT } from '../constants/error-message.constant';
@@ -25,8 +26,9 @@ export class ValidateVerificationCodeUseCase {
         new FindOtpByPhoneQuery(phone),
       );
 
-      if (code !== otp?.getCode())
-        throw new BadRequestException(ENTERED_CODE_IS_INCORRECT);
+      const isValid = code && (await otp.validateCode(code));
+
+      if (!isValid) throw new BadRequestException(ENTERED_CODE_IS_INCORRECT);
 
       return { success: true };
     } catch (error) {
