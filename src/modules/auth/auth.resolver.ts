@@ -35,20 +35,19 @@ import { SigninWithOtpUseCase } from '@/modules/auth/use-case/signin-with-otp.us
 import { SignupUseCase } from '@/modules/auth/use-case/signup.use-case';
 import { TUser } from '@/modules/user/entity/user.entity';
 
-import { OtpMutation } from './components/otp/dto/otp.dto';
 import { GetProfileOutput } from './dto/get-profile.dto';
 import {
   SetPasswordInput,
   ValidateVerificationCodeInput,
 } from './dto/pass-recovery.dto';
+import { SendVerificationCodeInput } from './dto/send-verification-code.dto';
 import { AccessTokenGuard } from './guards/access-token.guard';
 import { GetProfileUseCase } from './use-case/get-profile.use-case';
 import { PassRecoveryWithPhoneUseCase } from './use-case/pass-recovery-with-phone.use-case';
-import { SignupWithPhoneUseCase } from './use-case/signup-with-phone.use-case';
-import { ValidateVerificationCodeUseCase } from './use-case/validate-verification-code.use-case';
-import { SendVerificationCodeInput } from './dto/send-verification-code.dto';
 import { SendVerificationCodeUseCase } from './use-case/send-verification-code.use-case';
 import { SetPasswordUseCase } from './use-case/set-user-password.use-case';
+import { SignupWithPhoneUseCase } from './use-case/signup-with-phone.use-case';
+import { ValidateVerificationCodeUseCase } from './use-case/validate-verification-code.use-case';
 
 @Resolver(AuthQuery)
 export class AuthQueryResolver {
@@ -125,11 +124,6 @@ export class AuthMutationResolver {
 
   @ResolveField(() => PermissionMutation)
   async permission() {
-    return INITIAL_RESPONSE;
-  }
-
-  @ResolveField(() => OtpMutation)
-  async otp() {
     return INITIAL_RESPONSE;
   }
 
