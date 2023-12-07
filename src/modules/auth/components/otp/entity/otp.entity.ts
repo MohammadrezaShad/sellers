@@ -2,9 +2,9 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Prop } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { IsString } from 'class-validator';
+import { ObjectId } from 'mongodb';
 
 import { Schema } from '@/common/decorators/schema.decorator';
-import { DefaultEntity } from '@/common/entities/default.entity';
 import { CollectionName } from '@/common/enums/collection-name.enum';
 import { type Document } from '@/common/types/document.type';
 import { SchemaFactory } from '@/common/utils/schema-factory.util';
@@ -12,7 +12,10 @@ import { SchemaFactory } from '@/common/utils/schema-factory.util';
 @InputType('OtpInputType', { isAbstract: true })
 @ObjectType()
 @Schema({ collection: CollectionName.OTP })
-export class OtpEntity extends DefaultEntity {
+export class OtpEntity {
+  @Field(() => String)
+  _id: ObjectId;
+
   @Field(() => String)
   @Prop()
   @IsString()
@@ -22,6 +25,13 @@ export class OtpEntity extends DefaultEntity {
   @Prop()
   @IsString()
   code: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop({ type: Date, expires: '10m' })
+  createdAt?: string;
+
+  @Field(() => String, { nullable: true })
+  updatedAt?: string;
 }
 
 export type TOtpEntity = Document<OtpEntity>;

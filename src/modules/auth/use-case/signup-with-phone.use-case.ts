@@ -8,6 +8,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import { generateOTP } from '@/common/utils/generate-otp.util';
 import { SmsService } from '@/modules/sms/sms.service';
+import { USER_ALREADY_EXISTS } from '@/modules/user/constant/error-message.constant';
 import { UserModel } from '@/modules/user/model/user.model';
 import { FindUserByPhoneQuery } from '@/modules/user/query/find-user-by-phone/find-user-by-phone.query';
 
@@ -32,9 +33,8 @@ export class SignupWithPhoneUseCase {
       );
 
       const code = generateOTP();
-
       if (user && user.getIsVerified()) {
-        throw new BadRequestException('this phone number is exists');
+        throw new BadRequestException(USER_ALREADY_EXISTS);
       } else if (user && !user.getIsVerified()) {
         await this.commandBus.execute(
           new CreateOtpCommand({ phone: phone, code: code }),

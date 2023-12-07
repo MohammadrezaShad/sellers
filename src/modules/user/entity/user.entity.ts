@@ -23,7 +23,12 @@ export class UserEntity extends DefaultEntity {
   displayName?: string;
 
   @Field(() => String, { nullable: true })
-  @Prop({ type: String, nullable: true })
+  @Prop({
+    type: String,
+    nullable: true,
+    unique: true,
+    sparse: true,
+  })
   @IsOptional()
   @IsString()
   email?: string;
