@@ -23,7 +23,7 @@ export class SmsService {
         fromNum,
         toNum,
         patternCode,
-        inputData: [{ code }],
+        inputData: [{ 'verification-code': code }],
       });
       return true;
     } catch (e) {

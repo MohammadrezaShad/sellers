@@ -1,3 +1,4 @@
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
@@ -53,8 +54,8 @@ import { UserModule } from '@/modules/user/user.module';
           subscriptions: {
             'graphql-ws': true,
           },
-          playground: true,
-          plugins: [],
+          playground: false,
+          plugins: [ApolloServerPluginLandingPageLocalDefault()],
           cors: {
             credentials: true,
             // eslint-disable-next-line @typescript-eslint/ban-types
