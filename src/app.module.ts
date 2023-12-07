@@ -77,9 +77,7 @@ import { UserModule } from '@/modules/user/user.module';
       },
       inject: [],
     }),
-    MongooseModule.forRoot(process.env.MONGO_URI as string, {
-      dbName: 'egibi',
-    }),
+    MongooseModule.forRoot(process.env.MONGO_URI as string),
     CacheModule.registerAsync<ClientOpts>({
       isGlobal: true,
       useFactory: (config: ConfigService) => {
