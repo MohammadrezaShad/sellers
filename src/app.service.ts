@@ -14,20 +14,35 @@ export class AppService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    Promise.all(
-      Object.keys(Permission).map(async key => {
-        const dbPermission = await this.permissionRepository.findByName(
-          Permission[key].name,
-        );
-        if (!dbPermission) {
-          await this.permissionRepository.directCreate({
-            _id: new ObjectId(),
-            name: Permission[key].name,
-            title: Permission[key].title,
-          });
-        }
-      }),
-    );
+    // Promise.all(
+    //   Object.keys(Permission).map(async key => {
+    //     const dbPermission = await this.permissionRepository.findByName(
+    //       Permission[key].name,
+    //     );
+    //     if (!dbPermission) {
+    //       await this.permissionRepository.directCreate({
+    //         _id: new ObjectId(),
+    //         name: Permission[key].name,
+    //         title: Permission[key].title,
+    //       });
+    //     }
+    //   }),
+    // );
+    //
+
+    for (const key of Object.keys(Permission)) {
+      const dbPermission = await this.permissionRepository.findByName(
+        Permission[key].name,
+      );
+      if (!dbPermission) {
+        await this.permissionRepository.directCreate({
+          _id: new ObjectId(),
+          name: Permission[key].name,
+          title: Permission[key].title,
+        });
+      }
+    }
+
     const allPermission = await this.permissionRepository.findAll();
     const permissionIds =
       allPermission?.map(({ _id }) => _id.toHexString()) || [];
