@@ -31,12 +31,8 @@ export class FindUserByPhoneAndIsVerifiedUseCase {
       const user: UserModel = await this.queryBus.execute(
         new FindUserByPhoneAndIsVerifiedQuery(phone, isPasswordSelected),
       );
-
-      if (!user) {
-        throw new NotFoundException(USER_NOT_FOUND);
-      }
       return {
-        success: true,
+        success: user ? true : false,
         result: this.userFactory.create(user),
       };
     } catch (error) {
