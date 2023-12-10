@@ -29,7 +29,7 @@ import { UserResolvers } from '@/modules/user/user.resolver';
     UserModelFactory,
     UserDataLoader,
   ],
-  exports: [...UseCases],
+  exports: [],
 })
 @Global()
 export class UserModule {}

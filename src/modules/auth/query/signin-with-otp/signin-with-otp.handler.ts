@@ -5,7 +5,7 @@ import * as argon2 from 'argon2';
 import { SigninOutput } from '@/modules/auth/dto/signin.dto';
 import { TokenHelper } from '@/modules/auth/utils/token.helper';
 import { UserModel } from '@/modules/user/model/user.model';
-import { FindUserByPhoneAndIsVerifiedQuery } from '@/modules/user/query/find-user-by-phone-and-is-verified/find-user-by-phone-and-is-verified.query';
+import { FindUserByPhoneQuery } from '@/modules/user/query/find-user-by-phone/find-user-by-phone.query';
 
 import { NO_ACCOUNT_WITH_THIS_NUMBER } from '../../constants/error-message.constant';
 import { SigninWithOtpQuery } from './signin-with-otp.query';
@@ -19,7 +19,7 @@ export class SigninWithOtpHandler implements IQueryHandler<SigninWithOtpQuery> {
 
   async execute({ phone }: SigninWithOtpQuery): Promise<SigninOutput> {
     const user: UserModel = await this.queryBus.execute(
-      new FindUserByPhoneAndIsVerifiedQuery(phone),
+      new FindUserByPhoneQuery(phone),
     );
 
     if (!user) throw new NotFoundException(NO_ACCOUNT_WITH_THIS_NUMBER);

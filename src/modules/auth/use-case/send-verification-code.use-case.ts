@@ -12,7 +12,7 @@ import { CreateOtpCommand } from '@/modules/auth/components/otp/command/create-o
 import { USER_NOT_FOUND } from '@/modules/auth/constants/error-message.constant';
 import { SmsService } from '@/modules/sms/sms.service';
 import { UserModel } from '@/modules/user/model/user.model';
-import { FindUserByPhoneAndIsVerifiedQuery } from '@/modules/user/query/find-user-by-phone-and-is-verified/find-user-by-phone-and-is-verified.query';
+import { FindUserByPhoneQuery } from '@/modules/user/query/find-user-by-phone/find-user-by-phone.query';
 
 import { SendVerificationCodeInput } from '../dto/send-verification-code.dto';
 
@@ -29,7 +29,7 @@ export class SendVerificationCodeUseCase {
   }: SendVerificationCodeInput): Promise<CoreOutput> {
     try {
       const user: UserModel = await this.queryBus.execute(
-        new FindUserByPhoneAndIsVerifiedQuery(phone),
+        new FindUserByPhoneQuery(phone),
       );
       if (!user) throw new NotFoundException(USER_NOT_FOUND);
 

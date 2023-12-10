@@ -5,15 +5,14 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { QueryBus } from '@nestjs/cqrs';
 import { GqlExecutionContext } from '@nestjs/graphql/dist/services/gql-execution-context';
 
+import { PermissionType } from '@/common/permissions/permission-type';
 import { FindPermissionByIdsUseCase } from '@/modules/auth/components/permission/use-case/find-permission-by-ids.use-case';
 import { FindRoleByIdsUseCase } from '@/modules/auth/components/role/use-case/find-role-by-ids.use-case';
 import { PERMISSION_KEY } from '@/modules/auth/constants/common.constant';
 import { ACCESS_ERROR_MESSAGE } from '@/modules/auth/constants/error-message.constant';
-import { FindUserByIdUseCase } from '@/modules/user/use-case/find-user-by-id.use-case';
-import { PermissionType } from '@/common/permissions/permission-type';
-import { QueryBus } from '@nestjs/cqrs';
 import { UserModel } from '@/modules/user/model/user.model';
 import { FindUserByIdQuery } from '@/modules/user/query/find-user-by-id/find-user-by-id.query';
 
