@@ -1,6 +1,9 @@
 import { PermissionPermit } from '@/modules/auth/components/permission/permission/permission-permit';
 import { RolePermission } from '@/modules/auth/components/role/permission/role-permission';
+import { CommissionPermission } from '@/modules/commission/permission/comission-permission';
 import { ImagePermission } from '@/modules/image/permission/image-permission';
+import { ReportPermission } from '@/modules/report/permission/report-permission';
+import { SellerPermission } from '@/modules/seller/permission/seller-permission';
 import { TaxonomyPermission } from '@/modules/taxonomy/permission/taxonomy-permission';
 import { UserPermission } from '@/modules/user/permission/user-permission';
 
@@ -41,4 +44,20 @@ export class Permission {
   static readonly CREATE_TAXONOMY = TaxonomyPermission.CREATE_TAXONOMY;
   static readonly UPDATE_TAXONOMY = TaxonomyPermission.UPDATE_TAXONOMY;
   static readonly DELETE_TAXONOMY = TaxonomyPermission.DELETE_TAXONOMY;
+
+  static readonly CREATE_SELLER = SellerPermission.CREATE_SELLER;
+  static readonly UPDATE_SELLER = SellerPermission.UPDATE_SELLER;
+  static readonly DELETE_SELLER = SellerPermission.DELETE_SELLER;
+  static readonly BULK_DELETE_SELLER = SellerPermission.BULK_DELETE_SELLER;
+
+  static readonly CREATE_REPORT = ReportPermission.CREATE_REPORT;
+  static readonly UPDATE_REPORT = ReportPermission.UPDATE_REPORT;
+  static readonly DELETE_REPORT = ReportPermission.DELETE_REPORT;
+  static readonly BULK_DELETE_REPORT = ReportPermission.BULK_DELETE_REPORT;
+
+  static readonly CREATE_COMMISSION = CommissionPermission.CREATE_COMMISSION;
+  static readonly UPDATE_COMMISSION = CommissionPermission.UPDATE_COMMISSION;
+  static readonly DELETE_COMMISSION = CommissionPermission.DELETE_COMMISSION;
+  static readonly BULK_DELETE_COMMISSION =
+    CommissionPermission.BULK_DELETE_COMMISSION;
 }

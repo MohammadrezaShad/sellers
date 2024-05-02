@@ -21,9 +21,3 @@ export class SearchRoleOutput extends PaginationOutput {
   @Field(() => [RoleEntity], { nullable: true })
   results?: RoleEntity[];
 }
-
-@ObjectType('SearchRoleResults')
-export class SearchRoleResults extends PaginationOutput {
-  @Field(() => [RoleModel], { nullable: true })
-  results?: RoleModel[];
-}

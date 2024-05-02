@@ -9,6 +9,9 @@ export enum CollectionName {
   PERMISSION = 'permission',
   ROLE = 'role',
   OTP = 'otp',
+  SELLER = 'seller',
+  REPORT = 'report',
+  COMMISSION = 'commission',
 }
 
 registerEnumType(CollectionName, {

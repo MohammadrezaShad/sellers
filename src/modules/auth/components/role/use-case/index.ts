@@ -1,4 +1,4 @@
-import { BulkDeleteRoleUseCase } from '@/modules/auth/components/role/use-case/bulk-delete-role.user-case';
+import { BulkDeleteRoleUseCase } from '@/modules/auth/components/role/use-case/bulk-delete-role.use-case';
 import { CreateRoleUseCase } from '@/modules/auth/components/role/use-case/create-role.use-case';
 import { DeleteRoleUseCase } from '@/modules/auth/components/role/use-case/delete-role.use-case';
 import { FindRoleByIdUseCase } from '@/modules/auth/components/role/use-case/find-role-by-id.use-case';

@@ -30,7 +30,7 @@ import {
 } from '@/modules/auth/components/role/dto/update-role.dto';
 import { RoleEntity } from '@/modules/auth/components/role/entity/role.entity';
 import RoleDataLoader from '@/modules/auth/components/role/role.loader';
-import { BulkDeleteRoleUseCase } from '@/modules/auth/components/role/use-case/bulk-delete-role.user-case';
+import { BulkDeleteRoleUseCase } from '@/modules/auth/components/role/use-case/bulk-delete-role.use-case';
 import { CreateRoleUseCase } from '@/modules/auth/components/role/use-case/create-role.use-case';
 import { DeleteRoleUseCase } from '@/modules/auth/components/role/use-case/delete-role.use-case';
 import { FindRoleByIdUseCase } from '@/modules/auth/components/role/use-case/find-role-by-id.use-case';

@@ -85,8 +85,8 @@ export class UserEntity extends DefaultEntity {
 type TUser = Document<UserEntity>;
 const UserSchema = SchemaFactory(UserEntity);
 
-UserSchema.index({ displayName: 'text' });
-UserSchema.index({ displayName: 1 });
+UserSchema.index({ displayName: 'text', phone: 'text' });
+UserSchema.index({ displayName: 1, phone: 1 });
 
 export { UserSchema, TUser };
 

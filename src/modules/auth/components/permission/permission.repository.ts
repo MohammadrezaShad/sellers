@@ -13,7 +13,7 @@ import {
 } from '@/modules/auth/components/permission/dto/find-permission.dto';
 import {
   SearchPermissionInput,
-  SearchPermissionResults,
+  SearchPermissionOutput,
 } from '@/modules/auth/components/permission/dto/search-permission.dto';
 import { UpdatePermissionInput } from '@/modules/auth/components/permission/dto/update-permission.dto';
 import {
@@ -22,6 +22,7 @@ import {
 } from '@/modules/auth/components/permission/entity/permission.entity';
 import { PermissionEntityFactory } from '@/modules/auth/components/permission/entity/permission.factory';
 import { PermissionModel } from '@/modules/auth/components/permission/model/permission.model';
+import { escapeRegex } from '@/common/utils/escape-regx.util';
 
 @Injectable()
 export class PermissionRepository {
@@ -86,14 +87,18 @@ export class PermissionRepository {
     count: inputCount,
     page: inputPage,
     text,
-  }: SearchPermissionInput): Promise<SearchPermissionResults> {
+  }: SearchPermissionInput): Promise<SearchPermissionOutput> {
     const count = inputCount || DEFAULT_COUNT;
     const page = inputPage || DEFAULT_PAGE;
+
+    const safeText = text ? escapeRegex(text) : text;
 
     const searchResults = await this.permissionModel.aggregate([
       {
         $match: {
-          ...(text && { $text: { $search: text } }),
+          ...(text && {
+            $or: [{ $text: { $search: text } }, { name: { $regex: safeText } }],
+          }),
         },
       },
       {
@@ -113,14 +118,9 @@ export class PermissionRepository {
     const [finalResults = {}] = searchResults;
     const totalCount = finalResults.totalCount?.[0]?.count || 0;
 
-    const resutlsModelList = finalResults.results.map(
-      (entity: PermissionEntity) =>
-        this.permissionFactory.createFromEntity(entity),
-    );
-
     return {
       success: true,
-      results: resutlsModelList,
+      results: finalResults.results,
       totalCount,
       totalPages: Math.ceil(totalCount / inputCount),
     };

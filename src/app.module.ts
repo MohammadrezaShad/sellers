@@ -15,6 +15,9 @@ import { AuthModule } from '@/modules/auth/auth.module';
 import { ImageModule } from '@/modules/image/image.module';
 import { TaxonomysModule } from '@/modules/taxonomy/taxonomy.module';
 import { UserModule } from '@/modules/user/user.module';
+import { SellerModule } from './modules/seller/seller.module';
+import { ReportModule } from './modules/report/report.module';
+import { CommissionModule } from './modules/commission/commission.module';
 
 @Module({
   imports: [
@@ -100,6 +103,9 @@ import { UserModule } from '@/modules/user/user.module';
     ImageModule,
     TaxonomysModule,
     AuthModule,
+    SellerModule,
+    ReportModule,
+    CommissionModule,
   ],
   controllers: [],
   providers: [AppService],

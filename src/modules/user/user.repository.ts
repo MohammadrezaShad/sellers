@@ -24,6 +24,7 @@ import {
 import { TUser, UserEntity } from '@/modules/user/entity/user.entity';
 import { UserEntityFactory } from '@/modules/user/entity/user.factory';
 import { UserModel } from '@/modules/user/model/user.model';
+import { escapeRegex } from '@/common/utils/escape-regx.util';
 
 @Injectable()
 export class UserRepository {
@@ -83,6 +84,8 @@ export class UserRepository {
     const count = inputCount || DEFAULT_COUNT;
     const page = inputPage || DEFAULT_PAGE;
 
+    const safeText = text ? escapeRegex(text) : text;
+
     let isVerifiedFilter: PipelineStage[] = [];
     if (isVerified || isVerified === false) {
       isVerifiedFilter = [
@@ -96,7 +99,10 @@ export class UserRepository {
       {
         $match: {
           ...(text && {
-            $or: [{ $text: { $search: text } }],
+            $or: [
+              { $text: { $search: text } },
+              { phone: { $regex: safeText } },
+            ],
           }),
           ...(displayName && { displayName: displayName }),
           ...(email && { email: email }),

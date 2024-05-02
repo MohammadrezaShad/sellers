@@ -13,7 +13,7 @@ import {
 } from '@/modules/auth/components/role/dto/find-role.dto';
 import {
   SearchRoleInput,
-  SearchRoleResults,
+  SearchRoleOutput,
 } from '@/modules/auth/components/role/dto/search-role.dto';
 import { UpdateRoleInput } from '@/modules/auth/components/role/dto/update-role.dto';
 import {
@@ -22,6 +22,7 @@ import {
 } from '@/modules/auth/components/role/entity/role.entity';
 import { RoleEntityFactory } from '@/modules/auth/components/role/entity/role.factory';
 import { RoleModel } from '@/modules/auth/components/role/model/role.model';
+import { escapeRegex } from '@/common/utils/escape-regx.util';
 
 @Injectable()
 export class RoleRepository {
@@ -78,14 +79,18 @@ export class RoleRepository {
     count: inputCount,
     page: inputPage,
     text,
-  }: SearchRoleInput): Promise<SearchRoleResults> {
+  }: SearchRoleInput): Promise<SearchRoleOutput> {
     const count = inputCount || DEFAULT_COUNT;
     const page = inputPage || DEFAULT_PAGE;
+
+    const safeText = text ? escapeRegex(text) : text;
 
     const searchResults = await this.roleModel.aggregate([
       {
         $match: {
-          ...(text && { $text: { $search: text } }),
+          ...(text && {
+            $or: [{ $text: { $search: text } }, { name: { $regex: safeText } }],
+          }),
         },
       },
       {
@@ -105,13 +110,9 @@ export class RoleRepository {
     const [finalResults = {}] = searchResults;
     const totalCount = finalResults.totalCount?.[0]?.count || 0;
 
-    const resutlsModelList = finalResults.results.map((entity: RoleEntity) =>
-      this.roleFactory.createFromEntity(entity),
-    );
-
     return {
       success: true,
-      results: resutlsModelList,
+      results: finalResults.results,
       totalCount,
       totalPages: Math.ceil(totalCount / inputCount),
     };
